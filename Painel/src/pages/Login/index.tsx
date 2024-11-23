@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
-    // Hooks
     const navigate = useNavigate();
 
     const refForm = useRef<any>();
@@ -44,7 +43,7 @@ export default function Login() {
                     JSON.stringify(resposta.data)
                 )
                
-                navigate('/dashboard')
+                navigate('/usuarios')
 
 
             }).catch((erro) => {
@@ -53,8 +52,6 @@ export default function Login() {
                 setLoading(false)
                 setToast(true)
             })
-
-
 
         } else {
             refForm.current.classList.add('was-validated')
@@ -74,15 +71,17 @@ export default function Login() {
                 onClose={() => { setToast(false) }}
             />
             <div
-                className={styles.main}
+                className={`${styles.main} p-5`}
+                style={{ backgroundColor: '#f5f5f5', height: '100vh' }} 
             >
                 <div
-                    className={styles.border}
+                    className={`${styles.border} p-4`}
+                    style={{ borderRadius: '8px', backgroundColor: '#ffffff', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}
                 >
                     <div
                         className='d-flex flex-column align-items-center'
                     >
-                        <h1 className='text-primary'>Login</h1>
+                        <h1 className='text-danger'>Login</h1> 
                         <p
                             className='text-secondary'
                         >
@@ -117,12 +116,11 @@ export default function Login() {
                             <div
                                 className='invalid-feedback'
                             >
-                                Por favor digite seu email
+                                E-mail
                             </div>
                         </div>
 
                         <div className='col-md-12 mt-1'>
-                            {/* comentario */}
                             <label
                                 htmlFor='senha'
                                 className='form-label'
@@ -139,7 +137,7 @@ export default function Login() {
                             <div
                                 className='invalid-feedback'
                             >
-                                Por favor digite sua senha
+                                Senha
                             </div>
                         </div>
 
@@ -147,7 +145,7 @@ export default function Login() {
                             className='col-md-12 mt-3'
                         >
                             <button
-                                className='btn btn-primary w-100'
+                                className='btn btn-danger w-100'
                                 type='submit'
                                 id='botao'
                             >

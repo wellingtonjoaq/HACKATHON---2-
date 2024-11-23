@@ -30,7 +30,6 @@ export default function GerenciarUsuarios() {
 
     const [isEdit, setIsEdit] = useState<boolean>(false)
 
-    // Inicio, Update State, Destruir
     useEffect(() => {
 
         let lsStorage = localStorage.getItem('americanos.token')
@@ -47,21 +46,16 @@ export default function GerenciarUsuarios() {
             navigate("/")
         }
 
-        // console.log("Pode desfrutar do sistema :D")
-
         const idUser = Number(id)
 
         console.log(import.meta.env.VITE_URL)
         if (!isNaN(idUser)) {
-            // editar
 
-            // sweetalert2
             axios.get(import.meta.env.VITE_URL +
                 '/users?id=' + idUser)
                 .then((res) => {
                     setIsEdit(true)
 
-                    // seed - BD - backend(Parecido com migrations)
 
                     setValue("nome", res.data[0].nome)
                     setValue("email", res.data[0].email)
@@ -77,13 +71,11 @@ export default function GerenciarUsuarios() {
         (data) => {
 
             if (isEdit) {
-                // esta editando
 
                 if (data.password?.trim() === '') {
                     delete data.password
                 }
 
-                // Loading true
                 axios.put(import.meta.env.VITE_URL +
                     '/users/' + id,
                     data
@@ -92,11 +84,9 @@ export default function GerenciarUsuarios() {
                         navigate('/usuarios')
                     })
                     .catch((err) => {
-                        // COLOCAR ALERT DE ERRO!!
                     })
             } else {
 
-                // cadastrando
                 axios.post('http://localhost:3001/users',
                     data
                 ).then((res) => {
@@ -133,7 +123,6 @@ export default function GerenciarUsuarios() {
 
                     }}
                     ref={refForm}
-                // ref={(valorReferenciaHtml) => { refForm.current = valorReferenciaHtml }}
                 >
                     <div className="col-md-12">
                         <label
@@ -165,7 +154,7 @@ export default function GerenciarUsuarios() {
                             htmlFor="email"
                             className="form-label"
                         >
-                            Email
+                            E-mail
                         </label>
                         <input
                             type="email"
@@ -190,7 +179,7 @@ export default function GerenciarUsuarios() {
                             htmlFor="permissoes"
                             className="form-label"
                         >
-                            Perfil
+                            Papel
                         </label>
 
                         <select
@@ -205,13 +194,13 @@ export default function GerenciarUsuarios() {
                             }
                         >
                             <option value="">
-                                Selecione o tipo
+                                Selecione o papel
                             </option>
                             <option value="admin">
                                 Admin
                             </option>
-                            <option value="colaborador">
-                                Colaborador
+                            <option value="professor">
+                                Professor
                             </option>
                         </select>
                         <div className="invalid-feedback">
@@ -231,12 +220,6 @@ export default function GerenciarUsuarios() {
                             className="form-control"
                             placeholder="Yuri"
                             id="password"
-                            // required={!isEdit}
-                            // {
-                            //     ...register('password',
-                            //         {required: isEdit ? undefined : 'Senha é obrigatoria'}
-                            //     )
-                            // }
                             required
                             {...register('password',
                                 {

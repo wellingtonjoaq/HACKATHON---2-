@@ -1,11 +1,11 @@
 {
   "users": [
     {
-      "id": 1,
-      "email": "admin@gmail.com",
-      "password": "$2a$10$Y4/4ws04wYotZQg2RB1bwurp7W6RCq.NLrUEEONlOZEdjLXCVG/LW",
       "nome": "Admin",
-      "permissoes": "admin"
+      "email": "admin@gmail.com",
+      "permissoes": "admin",
+      "password": "$2a$10$Q8RG0nOaQSy3wCuphnZf0uC4XRtAL4PpaoZlEvlTACqZQKMuIHvJS",
+      "id": 1
     },
     {
       "email": "yuri@gmail.com",
@@ -17,9 +17,16 @@
     {
       "nome": "Yamal",
       "email": "lamine@gmail.com",
-      "permissoes": "colaborador",
-      "password": "$2a$10$/1PN0nlWU6BH00Z1oyrSVeUbg1nDzvmKAqC6rAJZhkZ/WtynbkVdu",
+      "permissoes": "admin",
+      "password": "$2a$10$eC/EUOWCjj1GACTpZAn2ZuAtjJBVCFiQjxuGpau5Zq.uB0mPobptS",
       "id": 3
+    },
+    {
+      "nome": "Wellington",
+      "email": "wellington@gmail.com",
+      "permissoes": "professor",
+      "password": "$2a$10$NBuqwqNmkD14zb7CV3vOyOlx0ZufFFYCnHgfsY4Vef0YeAC0EwG2.",
+      "id": 4
     }
   ]
 }
