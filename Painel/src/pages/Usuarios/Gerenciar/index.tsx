@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { IToken } from "../../../interfaces/token";
 import { verificaTokenExpirado } from "../../../services/token";
-import { LayoutDashboard } from "../../../components/LayoutDashboard";
+import { LayoutDashboard } from "../../../components/AdminDashboard";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 
@@ -32,7 +32,7 @@ export default function GerenciarUsuarios() {
 
     useEffect(() => {
 
-        let lsStorage = localStorage.getItem('americanos.token')
+        let lsStorage = localStorage.getItem('painel.token')
 
         let token: IToken | null = null
 
@@ -104,10 +104,6 @@ export default function GerenciarUsuarios() {
     return (
         <>
             <LayoutDashboard>
-                <h1>
-                    {isEdit ? "Editar Usuário" : " Adicionar Usuário"}
-                </h1>
-
                 <form
                     className="row g-3 needs-validation mb-3"
                     noValidate
@@ -124,123 +120,131 @@ export default function GerenciarUsuarios() {
                     }}
                     ref={refForm}
                 >
-                    <div className="col-md-12">
-                        <label
-                            htmlFor="nome"
-                            className="form-label"
+               <div style={{
+                    display: "flex",             
+                    justifyContent: "center",     
+                    alignItems: "center",         
+                    minHeight: "90vh",            
+                    padding: "20px",              
+                    marginTop: "-10vh"            
+                }}>
+                    <div style={{
+                        border: "1px solid black",
+                        backgroundColor: "#f8f9fa", 
+                        padding: "20px",
+                        borderRadius: "5px",
+                        maxWidth: "600px", 
+                        width: "100%"      
+                    }}>
+                        <h1
+                            style={{
+                                textAlign: "center"
+                            }}
                         >
-                            Nome
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Yuri"
-                            id="nome"
-                            required
-                            {...register('nome',
-                                {
-                                    required: 'Nome é obrigatório!',
-                                }
-                            )}
-                        />
-                        <div className="invalid-feedback">
-                            {errors.nome && errors.nome.message}
-                        </div>
+                            {isEdit ? "Editar Usuário" : "Adicionar Usuário"}
+                        </h1>
 
+                        <form
+                            className="row g-3 needs-validation mb-3"
+                            noValidate
+                            style={{
+                                alignItems: 'center'
+                            }}
+                            onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                                event.preventDefault();
+                                refForm.current.classList.add('was-validated');
+                                handleSubmit(submitForm)(event);
+                            }}
+                            ref={refForm}
+                        >
+                            <div className="col-md-6">
+                                <label htmlFor="nome" className="form-label">
+                                    Nome
+                                </label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Adicione seu nome"
+                                    id="nome"
+                                    required
+                                    {...register('nome', { required: 'Nome é obrigatório!' })}
+                                />
+                                <div className="invalid-feedback">
+                                    {errors.nome && errors.nome.message}
+                                </div>
+                            </div>
+
+                            <div className="col-md-6">
+                                <label htmlFor="permissoes" className="form-label">
+                                    Papel
+                                </label>
+                                <select
+                                    className="form-select"
+                                    defaultValue={''}
+                                    id="permissoes"
+                                    required
+                                    {...register("permissoes", { required: 'Selecione' })}
+                                >
+                                    <option value="">Selecione o papel</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="professor">Professor</option>
+                                </select>
+                                <div className="invalid-feedback">
+                                    {errors.permissoes && errors.permissoes.message}
+                                </div>
+                            </div>
+
+                            <div className="col-md-12">
+                                <label htmlFor="email" className="form-label">
+                                    E-mail
+                                </label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    placeholder="exemplo@gmail.com"
+                                    id="email"
+                                    required
+                                    {...register('email', { required: 'Email é obrigatório!' })}
+                                />
+                                <div className="invalid-feedback">
+                                    {errors.email && errors.email.message}
+                                </div>
+                            </div>
+
+                            <div className="col-md-12">
+                                <label htmlFor="password" className="form-label">
+                                    Senha
+                                </label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    placeholder="Digite sua senha"
+                                    id="password"
+                                    required
+                                    {...register('password', { required: 'Senha é obrigatória!' })}
+                                />
+                                <div className="invalid-feedback">
+                                    {errors.password && errors.password.message}
+                                </div>
+                            </div>
+
+                            <div className="col-md-12">
+                                <div className="d-flex justify-content-center">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-success"
+                                        style={{
+                                            width: "50%",
+                                        }}
+                                    >
+                                        Salvar
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
                     </div>
-
-                    <div className="col-md-12">
-                        <label
-                            htmlFor="email"
-                            className="form-label"
-                        >
-                            E-mail
-                        </label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            placeholder="Yuri"
-                            id="email"
-                            required
-                            {...register('email',
-                                {
-                                    required: 'Email é obrigatório!',
-                                }
-                            )}
-                        />
-                        <div className="invalid-feedback">
-                            {errors.email && errors.email.message}
-                        </div>
-
-                    </div>
-
-                    <div className="col-md-12">
-                        <label
-                            htmlFor="permissoes"
-                            className="form-label"
-                        >
-                            Papel
-                        </label>
-
-                        <select
-                            className="form-select"
-                            defaultValue={''}
-                            id="permissoes"
-                            required
-                            {
-                            ...register("permissoes",
-                                { required: 'Selecione' }
-                            )
-                            }
-                        >
-                            <option value="">
-                                Selecione o papel
-                            </option>
-                            <option value="admin">
-                                Admin
-                            </option>
-                            <option value="professor">
-                                Professor
-                            </option>
-                        </select>
-                        <div className="invalid-feedback">
-                            {errors.permissoes && errors.permissoes.message}
-                        </div>
-                    </div>
-
-                    <div className="col-md-12">
-                        <label
-                            htmlFor="password"
-                            className="form-label"
-                        >
-                            Senha
-                        </label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            placeholder="Yuri"
-                            id="password"
-                            required
-                            {...register('password',
-                                {
-                                    required: 'Senha é obrigatório!',
-                                }
-                            )}
-                        />
-                        <div className="invalid-feedback">
-                            {errors.password && errors.password.message}
-                        </div>
-
-                    </div>
-
-                    <div className="col-md-12">
-                        <button
-                            type="submit"
-                            className="btn btn-success"
-                        >
-                            Salvar
-                        </button>
-                    </div>
+                </div>
                 </form>
             </LayoutDashboard>
         </>

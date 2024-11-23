@@ -39,7 +39,7 @@ export default function Login() {
                 console.log(resposta.data)
 
                 localStorage.setItem(
-                    'americanos.token',
+                    'painel.token',
                     JSON.stringify(resposta.data)
                 )
                

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { LayoutDashboard } from "../../components/LayoutDashboard";
+import { LayoutDashboard } from "../../components/AdminDashboard";
 import { useEffect, useState } from "react";
 import { IToken } from "../../interfaces/token";
 import { validaPermissao, verificaTokenExpirado } from "../../services/token";
@@ -21,7 +21,7 @@ export default function Usuarios() {
     const [filtro, setFiltro] = useState<string>("");
 
     useEffect(() => {
-        let lsStorage = localStorage.getItem("americanos.token");
+        let lsStorage = localStorage.getItem("painel.token");
 
         let token: IToken | null = null;
 
@@ -57,138 +57,83 @@ export default function Usuarios() {
         return usuario.permissoes === filtro;
     });
 
+    const excluirUsuario = (id: number) => {
+        if (window.confirm("Você tem certeza que deseja excluir este usuário?")) {
+            axios
+                .delete(`http://localhost:3001/users/${id}`)
+                .then(() => {
+                    setDadosUsuarios(dadosUsuarios.filter((usuario) => usuario.id !== id));
+                })
+                .catch((err) => {
+                    console.error("Erro ao excluir usuário", err);
+                });
+        }
+    };
+
     return (
         <>
             <Loading visible={loading} />
             <LayoutDashboard>
-            <div
-                className="d-flex flex-column flex-md-row justify-content-between align-items-center p-3"
-                style={{
-                    backgroundColor: "#f8f9fa",
-                    border: "1px solid black",
-                }}
-            >
-                <div
-                    className="d-flex flex-column align-items-center mb-3 mb-md-0"
-                    style={{
-                        padding: "8px",
-                    }}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="48"
-                        height="48"
-                        fill="currentColor"
-                        className="bi bi-person-circle"
-                        viewBox="0 0 16 16"
-                    >
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                        <path
-                            fillRule="evenodd"
-                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
-                        />
-                    </svg>
-                    <h1 className="h2 mt-2">Usuários</h1>
-                </div>
-
-                <div
-                    className="d-flex flex-column flex-md-row align-items-center ms-auto"
-                    style={{
-                        padding: "20px",
-                    }}
-                >
-                    <div className="dropdown me-3">
-                        <button
-                            type="button"
-                            className="btn btn-dark btn-lg dropdown-toggle"
-                            id="dropdownFiltro"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                            style={{
-                                width: "250px",
-                                textAlign: "center",
-                            }}
-                        >
-                            Filtrar
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                className="bi bi-caret-down ms-2"
-                                viewBox="0 0 16 16"
-                            ></svg>
-                        </button>
-                        <ul
-                            className="dropdown-menu"
-                            aria-labelledby="dropdownFiltro"
-                            style={{
-                                textAlign: "center",
-                                width: "250px",
-                            }}
-                        >
-                            <li>
-                                <button
-                                    className="dropdown-item"
-                                    onClick={() => setFiltro("admin")}
-                                >
-                                    Admin
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="dropdown-item"
-                                    onClick={() => setFiltro("professor")}
-                                >
-                                    Professor
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="dropdown-item"
-                                    onClick={() => setFiltro("")}
-                                >
-                                    Todos
-                                </button>
-                            </li>
-                        </ul>
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center p-3 bg-light border">
+                    <div className="d-flex flex-column align-items-center mb-3 mb-md-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                            <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                        </svg>
+                        <h1 className="h2 mt-2">Usuários</h1>
                     </div>
 
-                    <button
-                        type="button"
-                        className="btn btn-success btn-lg mt-3 mt-md-0"
-                        style={{
-                            width: "180px",
-                            marginRight: "10px", 
-                        }}
-                        onClick={() => {
-                            navigate("/usuarios/criar");
-                        }}
-                    >
-                        Adicionar
-                    </button>
-                </div>
-            </div>
+                    <div className="d-flex flex-column flex-md-row align-items-center ms-auto">
+                        <div className="dropdown me-3">
+                            <button
+                                type="button"
+                                className="btn btn-dark btn-lg dropdown-toggle"
+                                id="dropdownFiltro"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                style={{ width: "200px", textAlign: "center" }}
+                            >
+                                Filtrar
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-down ms-2" viewBox="0 0 16 16" />
+                            </button>
+                            <ul className="dropdown-menu" aria-labelledby="dropdownFiltro" style={{ textAlign: "center", width: "200px" }}>
+                                <li>
+                                    <button className="dropdown-item" onClick={() => setFiltro("admin")}>Admin</button>
+                                </li>
+                                <li>
+                                    <button className="dropdown-item" onClick={() => setFiltro("professor")}>Professor</button>
+                                </li>
+                                <li>
+                                    <button className="dropdown-item" onClick={() => setFiltro("")}>Todos</button>
+                                </li>
+                            </ul>
+                        </div>
 
+                        <button
+                            type="button"
+                            className="btn btn-success btn-lg mt-3 mt-md-0"
+                            style={{ width: "180px", marginRight: "10px" }}
+                            onClick={() => {
+                                navigate("/usuarios/criar");
+                            }}
+                        >
+                            Adicionar
+                        </button>
+                    </div>
+                </div>
 
                 <div className="table-responsive">
-                    <table className="table table-striped">
+                    <table className="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nome</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Papel</th>
-                                <th
-                                    scope="col"
-                                    className="text-end"
-                                    style={{ paddingRight: "60px" }}
-                                >
-                                    Ações
-                                </th>
+                                <th scope="col" className="text-end">Ações</th>
                             </tr>
                         </thead>
-                        <tbody>
+                         <tbody>
                             {usuariosFiltrados.map((usuario, index) => {
                                 return (
                                     <tr key={index}>
@@ -210,7 +155,11 @@ export default function Usuarios() {
                                             >
                                                 Editar
                                             </button>
-                                            <button className="btn btn-danger" type="button">
+                                            <button
+                                                className="btn btn-danger"
+                                                type="button"
+                                                onClick={() => excluirUsuario(usuario.id)}
+                                            >
                                                 Excluir
                                             </button>
                                         </td>

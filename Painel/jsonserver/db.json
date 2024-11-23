@@ -8,25 +8,11 @@
       "id": 1
     },
     {
-      "email": "yuri@gmail.com",
-      "password": "$2a$10$bx/TzDM.mrRiqFaSP6UxIedNuQj8P7bzIBxRs5MKVcOjv/25UGOz2",
-      "nome": "Yuri Alberto",
-      "permissoes": "admin",
-      "id": 2
-    },
-    {
-      "nome": "Yamal",
-      "email": "lamine@gmail.com",
-      "permissoes": "admin",
-      "password": "$2a$10$eC/EUOWCjj1GACTpZAn2ZuAtjJBVCFiQjxuGpau5Zq.uB0mPobptS",
-      "id": 3
-    },
-    {
-      "nome": "Wellington",
       "email": "wellington@gmail.com",
+      "password": "$2a$10$55lpeF61zlTdfcdnHZ.h5eN.oiYR.lvWnQjtc3MvianDI0mxfmosa",
+      "nome": "Wellington",
       "permissoes": "professor",
-      "password": "$2a$10$NBuqwqNmkD14zb7CV3vOyOlx0ZufFFYCnHgfsY4Vef0YeAC0EwG2.",
-      "id": 4
+      "id": 2
     }
   ]
 }
