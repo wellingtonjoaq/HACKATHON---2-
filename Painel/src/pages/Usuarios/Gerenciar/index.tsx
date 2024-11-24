@@ -7,10 +7,10 @@ import axios from "axios";
 import { LayoutDashboard } from "../../../components/AdminDashboard";
 
 interface IForm {
-    nome: string;
-    email: string;
-    password?: string;
-    permissoes: string;
+    name: string
+    email: string
+    password?: string
+    papel: string
 }
 
 export default function GerenciarUsuarios() {
@@ -44,12 +44,12 @@ export default function GerenciarUsuarios() {
         const idUser = Number(id);
 
         if (!isNaN(idUser)) {
-            axios.get(import.meta.env.VITE_URL + '/users?id=' + idUser)
-                .then((res) => {
+            axios.get('http://localhost:8000/api/user/' + idUser)
+                .then((response) => {
                     setIsEdit(true);
-                    setValue("nome", res.data[0].nome);
-                    setValue("email", res.data[0].email);
-                    setValue("permissoes", res.data[0].permissoes);
+                    setValue("name", response.data.name);
+                    setValue("email", response.data.email);
+                    setValue("papel", response.data.papel);
                 });
         }
 
@@ -62,7 +62,7 @@ export default function GerenciarUsuarios() {
                     delete data.password;
                 }
 
-                axios.put(import.meta.env.VITE_URL + '/users/' + id, data)
+                axios.put('http://localhost:8000/api/user/' + id, data)
                     .then(() => {
                         navigate('/usuarios');
                     })
@@ -70,7 +70,7 @@ export default function GerenciarUsuarios() {
                         // handle error
                     });
             } else {
-                axios.post('http://localhost:3001/users', data)
+                axios.post('http://localhost:8000/api/register' , data)
                     .then(() => {
                         navigate('/usuarios');
                     })
@@ -84,7 +84,7 @@ export default function GerenciarUsuarios() {
         <>
             <LayoutDashboard>
                 <div className="container d-flex justify-content-center align-items-center min-vh-100" style={{ marginTop: "-100px" }}>
-                    <div className="p-4 rounded border border-dark" style={{ backgroundColor: "#f0f0f0", width: "100%", maxWidth: "800px", border: "2px solid black" }}>
+                    <div className="p-4 rounded border border-dark" style={{ backgroundColor: "#f0f0f0", width: "100%", maxWidth: "800px" }}>
                         <h1 className="mb-4 text-center">{isEdit ? "Editar Usuário" : "Adicionar Usuário"}</h1>
                         <form
                             className="needs-validation mb-3"
@@ -98,17 +98,17 @@ export default function GerenciarUsuarios() {
                         >
                             <div className="row mb-3">
                                 <div className="col-md-6">
-                                    <label htmlFor="nome" className="form-label">Nome</label>
+                                    <label htmlFor="name" className="form-label">Nome</label>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        id="nome"
-                                        placeholder="Yuri"
+                                        id="name"
+                                        placeholder="Digite seu nome"
                                         required
-                                        {...register('nome', { required: 'Nome é obrigatório!' })}
+                                        {...register('name', { required: 'Nome é obrigatório!' })}
                                     />
                                     <div className="invalid-feedback">
-                                        {errors.nome && errors.nome.message}
+                                        {errors.name && errors.name.message}
                                     </div>
                                 </div>
 
@@ -118,7 +118,7 @@ export default function GerenciarUsuarios() {
                                         type="email"
                                         className="form-control"
                                         id="email"
-                                        placeholder="Yuri"
+                                        placeholder="exemplo@gmail.com"
                                         required
                                         {...register('email', { required: 'Email é obrigatório!' })}
                                     />
@@ -130,20 +130,20 @@ export default function GerenciarUsuarios() {
 
                             <div className="row mb-3">
                                 <div className="col-md-6">
-                                    <label htmlFor="permissoes" className="form-label">Perfil</label>
+                                    <label htmlFor="papel" className="form-label">Papel</label>
                                     <select
                                         className="form-select"
-                                        id="permissoes"
+                                        id="papel"
                                         required
                                         defaultValue=""
-                                        {...register("permissoes", { required: 'Selecione' })}
+                                        {...register("papel", { required: 'Selecione' })}
                                     >
                                         <option value="">Selecione o tipo</option>
                                         <option value="admin">Admin</option>
-                                        <option value="colaborador">Colaborador</option>
+                                        <option value="professor">Professor</option>
                                     </select>
                                     <div className="invalid-feedback">
-                                        {errors.permissoes && errors.permissoes.message}
+                                        {errors.papel && errors.papel.message}
                                     </div>
                                 </div>
 
@@ -153,7 +153,7 @@ export default function GerenciarUsuarios() {
                                         type="password"
                                         className="form-control"
                                         id="password"
-                                        placeholder="Senha"
+                                        placeholder="Insira sua senha"
                                         required
                                         {...register('password', { required: 'Senha é obrigatória!' })}
                                     />
