@@ -4,7 +4,6 @@ import axios from "axios";
 import { Loading } from "../../../components/Loading";
 import { LayoutDashboard } from "../../../components/AdminDashboard";
 
-
 interface IEspacos {
     id: number;
     nome: string;
@@ -14,9 +13,9 @@ interface IEspacos {
 
 export default function AdicionarReserva() {
     const navigate = useNavigate();
-    const { espacoId } = useParams<{ espacoId: string }>();
+    const { espacoId } = useParams<{ espacoId: string }>(); // espacoId vindo da URL
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [espaco, setEspaco] = useState<IEspacos | null>(null);
     const [dataReserva, setDataReserva] = useState<string>("");
     const [horarioInicio, setHorarioInicio] = useState<string>("");
@@ -25,17 +24,22 @@ export default function AdicionarReserva() {
     useEffect(() => {
         setLoading(true);
 
-        axios
-            .get(`http://localhost:3001/espaco/${espacoId}`)
-            .then((res) => {
-                setEspaco(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error("Erro ao buscar espaço", err);
-                setLoading(false);
-            });
-    }, [espacoId]);
+        // Verifica se espacoId foi passado na URL e faz o fetch dos dados
+        if (espacoId) {
+            axios
+                .get(`http://localhost:3001/espaco/${espacoId}`)
+                .then((res) => {
+                    setEspaco(res.data);
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    console.error("Erro ao buscar espaço", err);
+                    setLoading(false);
+                });
+        } else {
+            navigate("/reservas"); // Caso espacoId não seja encontrado, redireciona para a tela de reservas
+        }
+    }, [espacoId, navigate]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -50,10 +54,11 @@ export default function AdicionarReserva() {
             return;
         }
 
-        const usuarioId = 1; // Ajuste conforme o ID do usuário logado.
+        const usuarioId = 1; // Substitua com o ID real do usuário em um cenário real
 
         setLoading(true);
 
+        // Criação da reserva
         axios
             .post("http://localhost:3001/reserva", {
                 espacoId: Number(espacoId),
@@ -64,14 +69,15 @@ export default function AdicionarReserva() {
             })
             .then(() => {
                 alert("Reserva criada com sucesso!");
-                navigate("/reservas");
+                navigate("/reservas"); // Redireciona para a tela de reservas após criação
             })
             .catch((err) => {
+                // Melhoria no tratamento de erro
                 if (err.response?.status === 400) {
-                    alert(err.response.data.message);
+                    alert(err.response.data.message || "Erro ao processar sua reserva.");
                 } else {
                     console.error("Erro ao criar reserva", err);
-                    alert("Erro ao criar reserva.");
+                    alert("Ocorreu um erro ao criar a reserva. Por favor, tente novamente.");
                 }
                 setLoading(false);
             });
@@ -83,13 +89,16 @@ export default function AdicionarReserva() {
             <LayoutDashboard>
                 <div className="container mt-5">
                     <h1>Adicionar Reserva</h1>
-                    {espaco && (
+                    {espaco ? (
                         <div className="mb-4">
                             <h3>Espaço: {espaco.nome}</h3>
                             <p>Capacidade: {espaco.capacidade}</p>
                             <p>Localização: {espaco.localizado}</p>
                         </div>
+                    ) : (
+                        <p>Carregando dados do espaço...</p>
                     )}
+
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="dataReserva" className="form-label">
@@ -104,6 +113,7 @@ export default function AdicionarReserva() {
                                 required
                             />
                         </div>
+
                         <div className="mb-3">
                             <label htmlFor="horarioInicio" className="form-label">
                                 Horário de Início
@@ -117,6 +127,7 @@ export default function AdicionarReserva() {
                                 required
                             />
                         </div>
+
                         <div className="mb-3">
                             <label htmlFor="horarioFim" className="form-label">
                                 Horário de Fim
@@ -130,6 +141,7 @@ export default function AdicionarReserva() {
                                 required
                             />
                         </div>
+
                         <button type="submit" className="btn btn-primary">
                             Confirmar Reserva
                         </button>

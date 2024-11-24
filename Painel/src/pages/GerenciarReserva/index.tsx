@@ -17,7 +17,9 @@ interface IReserva {
     id: number;
     espacoId: number;
     usuarioId: number;
+    nome: string;
     dataReserva: string;
+    horarioInicio: string;
 }
 
 export default function Reservas() {
@@ -34,36 +36,47 @@ export default function Reservas() {
     });
 
     const excluirReserva = (id: number) => {
-        if (window.confirm("Você tem certeza que deseja excluir esta reserva?")) {
+        if (window.confirm("Você tem certeza que deseja cancelar esta reserva?")) {
             axios
                 .delete(`http://localhost:3001/reserva/${id}`)
                 .then(() => {
                     setDadosReservas(dadosReservas.filter((reserva) => reserva.id !== id));
                 })
                 .catch((err) => {
-                    console.error("Erro ao excluir reserva", err);
+                    console.error("Erro ao cancelar reserva", err);
+                    alert("Erro ao cancelar reserva. Tente novamente.");
                 });
         }
     };
 
     const criarReserva = (espacoId: number) => {
-        const usuarioId = 1;
+        const usuarioId = 1; // ID do usuário autenticado (ajuste conforme necessário)
+        const nome = prompt("Informe seu nome:");
         const dataReserva = prompt("Informe a data da reserva (ex: 2024-12-01):");
+        const horarioInicio = prompt("Informe o horário de início (ex: 14:00):");
 
-        if (dataReserva) {
+        if (nome && dataReserva && horarioInicio) {
+            setLoading(true);
             axios
                 .post("http://localhost:3001/reserva", {
                     espacoId,
                     usuarioId,
+                    nome,
                     dataReserva,
+                    horarioInicio,
                 })
                 .then((res) => {
                     setDadosReservas([...dadosReservas, res.data]);
                     alert("Reserva criada com sucesso!");
+                    setLoading(false);
                 })
                 .catch((err) => {
                     console.error("Erro ao criar reserva", err);
+                    alert("Erro ao criar reserva. Tente novamente.");
+                    setLoading(false);
                 });
+        } else {
+            alert("Todos os campos são obrigatórios!");
         }
     };
 
@@ -76,7 +89,7 @@ export default function Reservas() {
         }
 
         if (!token || verificaTokenExpirado(token.accessToken)) {
-            navigate("/");
+            navigate("/"); 
         }
 
         if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
@@ -92,7 +105,7 @@ export default function Reservas() {
             })
             .catch((err) => {
                 setLoading(false);
-                console.error(err);
+                console.error("Erro ao buscar espaços", err);
             });
 
         axios
@@ -122,10 +135,7 @@ export default function Reservas() {
                                 id="dropdownFiltro"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
-                                style={{
-                                    width: "200px",
-                                    textAlign: "center",
-                                }}
+                                style={{ width: "200px", textAlign: "center" }}
                             >
                                 Filtrar
                                 <svg
@@ -164,6 +174,14 @@ export default function Reservas() {
                                 </li>
                             </ul>
                         </div>
+
+                        {/* Atualizando o botão de Reservar para navegar para a página de criação */}
+                        <button
+                            className="btn btn-primary btn-lg"
+                            onClick={() => navigate("/reserva/criar")}
+                        >
+                            Reservar
+                        </button>
                     </div>
                 </div>
 
@@ -177,72 +195,57 @@ export default function Reservas() {
                     }}
                 >
                     <div className="row">
-                        {espacosFiltrados.map((espaco) => (
-                            <div className="col-12 col-sm-6 col-md-4 mb-4" key={espaco.id}>
-                                <div
-                                    className="mb-3 p-3 border rounded"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        backgroundColor: "white",
-                                    }}
-                                >
+                        {espacosFiltrados.map((espaco) => {
+                            // Find reservation for each space
+                            const reserva = dadosReservas.find(
+                                (reserva) => reserva.espacoId === espaco.id
+                            );
+                            return (
+                                <div className="col-12 col-sm-6 col-md-4 mb-4" key={espaco.id}>
                                     <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                            border: "1px solid black",
-                                            padding: "10px",
-                                        }}
+                                        className="mb-3 p-3 border rounded"
+                                        style={{ display: "flex", flexDirection: "column", backgroundColor: "white" }}
                                     >
-                                        <div style={{ marginTop: "10px" }}>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                                border: "1px solid black",
+                                                padding: "10px",
+                                            }}
+                                        >
                                             <h5>{espaco.nome}</h5>
                                         </div>
-                                        <div className="dropdown">
-                                            <button
-                                                className="btn btn-secondary dropdown-toggle"
-                                                type="button"
-                                                id={`dropdown-${espaco.id}`}
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                                style={{
-                                                    backgroundColor: "white",
-                                                    border: "solid white",
-                                                }}
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    className="bi bi-pencil-fill"
-                                                    viewBox="0 0 16 16"
-                                                    style={{ color: "black" }}
-                                                >
-                                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
-                                                </svg>
+
+                                        <div style={{ padding: "10px" }}>
+                                            {reserva ? (
+                                                <>
+                                                    <p><strong>Reservado por:</strong> {reserva.nome}</p>
+                                                    <p><strong>Data:</strong> {reserva.dataReserva}</p>
+                                                    <p><strong>Horário:</strong> {reserva.horarioInicio}</p>
+                                                </>
+                                            ) : (
+                                                <p><strong>Espaço disponível!</strong></p>
+                                            )}
+                                            <p><strong>Capacidade:</strong> {espaco.capacidade} Pessoas</p>
+                                            <p><strong>Localização:</strong> {espaco.localizado}</p>
+                                        </div>
+
+                                        <div className="d-flex justify-content-between">
+                                            <button className="btn btn-danger" onClick={() => excluirReserva(reserva?.id || 0)}>
+                                                Cancelar
                                             </button>
-                                            <ul className="dropdown-menu" aria-labelledby={`dropdown-${espaco.id}`}>
-                                                <li>
-                                                <button
-                                                    className="dropdown-item"
-                                                    onClick={() => navigate(`/gerenciareserva/${espaco.id}`)}
-                                                >
+                                            {!reserva && (
+                                                <button className="btn btn-success" onClick={() => criarReserva(espaco.id)}>
                                                     Reservar
                                                 </button>
-                                                </li>
-                                            </ul>
+                                            )}
                                         </div>
                                     </div>
-
-                                    <div style={{ padding: "10px" }}>
-                                        <p>Capacidade: {espaco.capacidade} Pessoas</p>
-                                        <p>Localização: {espaco.localizado}</p>
-                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </LayoutDashboard>

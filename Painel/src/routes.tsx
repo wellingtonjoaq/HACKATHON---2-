@@ -40,11 +40,11 @@ export const Rotas = () => {
                     element={<AdicionarEspaco />}
                 />
                 <Route
-                    path='/gerenciareserva'
+                    path='/reserva'
                     element={<Reservas />}
                 />
                 <Route 
-                    path="/gerenciareserva/:Id" 
+                    path="/reserva/:id" 
                     element={<AdicionarReserva />} 
                 />
                 <Route

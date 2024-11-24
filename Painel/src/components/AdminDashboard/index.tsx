@@ -170,7 +170,7 @@ export const LayoutDashboard = (props: IProps) => {
                                     <li className="nav-item py-2">
                                         <Link
                                             className="nav-link d-flex align-items-center text-dark"
-                                            to={'/gerenciareserva'}
+                                            to={'/reserva'}
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"

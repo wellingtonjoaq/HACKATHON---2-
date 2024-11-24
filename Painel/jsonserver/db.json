@@ -48,16 +48,30 @@
         "Projetor"
       ],
       "id": 2
+    },
+    {
+      "nome": "Sala 20",
+      "capacidade": "40",
+      "localizado": "3ª Andar",
+      "disponibilidadeInicio": "19:00 PM",
+      "disponibilidadeFim": "22:25 PM",
+      "recursosInstalados": [
+        "Microfone",
+        "Lousa",
+        "Computador",
+        "Projetor"
+      ],
+      "id": 3
     }
   ],
   "reservas": [
     {
       "id": 1,
       "espacoId": 1,
-      "nome": "Wellington Joaquim",
+      "usuarioId": 1,
+      "nome": "João Silva",
       "dataReserva": "2024-12-01",
-      "horarioInicio": "19:00 PM",
-      "horarioFim": "22:25 PM"
+      "horarioInicio": "14:00"
     }
   ]
 }
