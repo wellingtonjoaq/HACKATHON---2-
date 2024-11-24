@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ambientes', function (Blueprint $table) {
+        Schema::create('espacos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('local');
+            $table->string('localidade');
             $table->string('capacidade');
-            $table->string('recursos');
-            $table->string('descricao');
+            $table->text('recursosInstalados'); // Alterado para TEXT, permitindo armazenamento de JSON
+            $table->string('disponibilidadeInicio');
+            $table->string('disponibilidadeFim');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ambientes');
+        Schema::dropIfExists('espacos');
     }
 };

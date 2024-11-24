@@ -10,7 +10,7 @@ interface IEspacos {
     id: number;
     nome: string;
     capacidade: string;
-    localizado: string;
+    localidade: string;
 }
 
 export default function Espacos() {
@@ -22,13 +22,13 @@ export default function Espacos() {
 
     const espacosFiltrados = dadosEspacos.filter((espaco) => {
         if (!filtro) return true; 
-        return espaco.localizado.toLowerCase().includes(filtro.toLowerCase());
+        return espaco.localidade.toLowerCase().includes(filtro.toLowerCase());
     });    
 
     const excluirEspaco = (id: number) => {
         if (window.confirm("Você tem certeza que deseja excluir este espaço?")) {
             axios
-                .delete(`http://localhost:3001/espaco/${id}`)
+                .delete(`http://localhost:8000/api/espacos/${id}`)
                 .then(() => {
                     setDadosEspacos(dadosEspacos.filter((espaco) => espaco.id !== id));
                 })
@@ -40,6 +40,7 @@ export default function Espacos() {
 
     useEffect(() => {
         let lsStorage = localStorage.getItem("painel.token");
+
         let token: IToken | null = null;
 
         if (typeof lsStorage === "string") {
@@ -50,13 +51,14 @@ export default function Espacos() {
             navigate("/");
         }
 
-        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
-            navigate("/painelespaco");
+        if (!validaPermissao(["admin"], token?.user.papel)) {
+            navigate("/");
         }
 
-        setLoading(true);
+        console.log("Pode desfrutar do sistema :D");
+
         axios
-            .get("http://localhost:3001/espaco")
+            .get('http://localhost:8000/api/espacos')
             .then((res) => {
                 setDadosEspacos(res.data);
                 setLoading(false);
@@ -205,7 +207,7 @@ export default function Espacos() {
 
                                     <div style={{ padding: "10px" }}>
                                         <p>Capacidade: {espaco.capacidade} Pessoas</p>
-                                        <p>Localização: {espaco.localizado}</p>
+                                        <p>Localização: {espaco.localidade}</p>
                                     </div>
                                 </div>
                             </div>

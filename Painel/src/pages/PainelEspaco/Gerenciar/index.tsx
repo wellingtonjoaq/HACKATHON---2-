@@ -9,7 +9,7 @@ import { LayoutDashboard } from "../../../components/AdminDashboard";
 interface IEspacos {
     nome: string;
     capacidade: string;
-    localizado: string;
+    localidade: string;
     disponibilidadeInicio: string;
     disponibilidadeFim: string;
     recursosInstalados: string[];
@@ -21,7 +21,7 @@ export default function AdicionarEspaco() {
     const [loading, setLoading] = useState(false);
     const [nome, setNome] = useState<string>("");
     const [capacidade, setCapacidade] = useState<string>("");
-    const [localizado, setLocalizado] = useState<string>("");
+    const [localidade, setLocalidade] = useState<string>("");
     const [disponibilidadeInicio, setDisponibilidadeInicio] = useState<string>("");
     const [disponibilidadeFim, setDisponibilidadeFim] = useState<string>("");
     const [recursosInstalados, setRecursosInstalados] = useState<string[]>([]);
@@ -45,7 +45,7 @@ export default function AdicionarEspaco() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!nome || !capacidade || !localizado || !disponibilidadeInicio || !disponibilidadeFim || recursosInstalados.length === 0) {
+        if (!nome || !capacidade || !localidade || !disponibilidadeInicio || !disponibilidadeFim || recursosInstalados.length === 0) {
             setError("Todos os campos são obrigatórios!");
             return;
         }
@@ -53,7 +53,7 @@ export default function AdicionarEspaco() {
         const espacoData: IEspacos = {
             nome,
             capacidade,
-            localizado,
+            localidade,
             disponibilidadeInicio,
             disponibilidadeFim,
             recursosInstalados,
@@ -61,7 +61,7 @@ export default function AdicionarEspaco() {
 
         setLoading(true);
         axios
-            .post("http://localhost:3001/espaco", espacoData)
+            .post('http://localhost:8000/api/espacos', espacoData)
             .then(() => {
                 setLoading(false);
                 navigate("/painelespaco");
@@ -141,12 +141,12 @@ export default function AdicionarEspaco() {
 
                       <div className="col-12 col-md-6 mb-4">
                           <div className="form-group">
-                              <label htmlFor="localizado">Localização</label>
+                              <label htmlFor="localidade">Localização</label>
                               <select
-                                  id="localizado"
+                                  id="localidade"
                                   className="form-control"
-                                  value={localizado}
-                                  onChange={(e) => setLocalizado(e.target.value)}
+                                  value={localidade}
+                                  onChange={(e) => setLocalidade(e.target.value)}
                               >
                                   <option value="">Selecione a localização</option>
                                   <option value="Térreo">Térreo</option>
