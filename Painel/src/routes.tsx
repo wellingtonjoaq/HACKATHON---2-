@@ -7,6 +7,8 @@ import Login from './pages/Login'
 import PaginaDeExemplo from './pages/PaginaDeExemplo'
 import Usuarios from './pages/Usuarios'
 import GerenciarUsuarios from './pages/Usuarios/Gerenciar'
+import Notificacao from './pages/Notificacao'
+
 
 export const Rotas = () => {
     
@@ -27,6 +29,12 @@ export const Rotas = () => {
                     path='/usuarios/:id'
                     element={<GerenciarUsuarios />}
                 />
+                <Route
+                    path='/notificacao'
+                    element={<Notificacao/>}
+                />
+                
+
                 <Route
                     path='/exemplo'
                     element={<PaginaDeExemplo />}
