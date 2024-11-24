@@ -215,8 +215,6 @@ export default function AdicionarEspaco() {
                           </div>
                       </div>
 
-                      {error && <div className="alert alert-danger">{error}</div>}
-
                       <div className="col-12 text-center">
                           <button type="submit" className="btn btn-success w-100">Adicionar</button>
                       </div>

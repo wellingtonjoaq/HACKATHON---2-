@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ambiente;
+use App\Models\Espaco;
 use App\Models\Reserva;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        $reservas = Reserva::with(['usuario:id,name', 'ambiente:id,nome'])->get();
+        $reservas = Reserva::with(['usuario:id,name', 'espaco:id,nome'])->get();
 
         return response()->json($reservas);
 
@@ -28,12 +28,12 @@ class ReservaController extends Controller
         $reserva = new Reserva();
 
         $usuarios = User::all();
-        $ambientes = Ambiente::all();
+        $espacos = Espaco::all();
 
         return response()->json([
             'reserva' => $reserva,
             'usuarios' => $usuarios,
-            'ambientes' => $ambientes
+            'espacos' => $espacos
         ]);
     }
 
@@ -45,7 +45,7 @@ class ReservaController extends Controller
         try {
             $dados = $this->validateRequest($request);
 
-            $reserva = Reserva::create($dados);
+            $reserva = Espaco::create($dados);
 
             return response()->json([
                 'message' => 'Reserva criado com sucesso!',
@@ -71,7 +71,7 @@ class ReservaController extends Controller
      */
     public function show(string $id)
     {
-        $reserva = Reserva::with(['usuario', 'ambiente'])->find($id);
+        $reserva = Reserva::with(['usuario', 'espaco'])->find($id);
 
         if (!$reserva) {
             return response()->json(['mensagem' => 'Reserva não encontrada.'], 404);
@@ -85,7 +85,7 @@ class ReservaController extends Controller
      */
     public function edit(string $id)
     {
-        $reserva = Reserva::with(['usuario:id,name', 'ambiente:id,nome'])->find($id);
+        $reserva = Reserva::with(['usuario:id,name', 'espaco:id,nome'])->find($id);
 
         if (!$reserva) {
             return response()->json(['mensagem' => 'Reserva não encontrada.'], 404);
@@ -145,7 +145,7 @@ class ReservaController extends Controller
     {
         return $request->validate([
             'usuario_id' => 'required|exists:users,id', // Verifica se o ID existe na tabela 'users'
-            'ambiente_id' => 'required|exists:ambientes,id', // Verifica se o ID existe na tabela 'ambientes'
+            'espaco_id' => 'required|exists:espacos,id', // Verifica se o ID existe na tabela 'espacos'
             'horario_inicio' => 'required|string',
             'horario_fim' => 'required|string',
             'data' => 'required|date',
@@ -153,8 +153,8 @@ class ReservaController extends Controller
         ], [
             'usuario_id.required' => 'O campo usuário é obrigatório.',
             'usuario_id.exists' => 'O usuário selecionado não existe.',
-            'ambiente_id.required' => 'O campo ambiente é obrigatório.',
-            'ambiente_id.exists' => 'O ambiente selecionado não existe.',
+            'espaco_id.required' => 'O campo espaco é obrigatório.',
+            'espaco_id.exists' => 'O espaco selecionado não existe.',
             'horario_inicio.required' => 'O campo horário de início é obrigatório.',
             'horario_inicio.string' => 'O horário de início deve ser um texto válido.',
             'horario_fim.required' => 'O campo horário de término é obrigatório.',
