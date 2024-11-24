@@ -70,6 +70,35 @@ export default function Usuarios() {
         }
     };
 
+    useEffect(() => {
+        let lsStorage = localStorage.getItem("painel.token");
+        let token: IToken | null = null;
+    
+        if (typeof lsStorage === "string") {
+            token = JSON.parse(lsStorage);
+        }
+    
+        if (!token || verificaTokenExpirado(token.accessToken)) {
+            navigate("/");
+        }
+    
+        if (!validaPermissao(["admin", "professor"], token?.user.permissoes)) {
+            navigate("/usuarios");
+        }
+    
+        setLoading(true);
+        axios
+            .get("http://localhost:3001/users")
+            .then((res) => {
+                setDadosUsuarios(res.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.log(err);
+            });
+    }, [navigate]);
+
     return (
         <>
             <Loading visible={loading} />
