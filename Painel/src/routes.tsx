@@ -10,6 +10,8 @@ import PainelEspaco from './pages/PainelEspaco'
 import AdicionarEspaco from './pages/PainelEspaco/gerenciar'
 import Reservas from './pages/GerenciarReserva'
 import AdicionarReserva from './pages/GerenciarReserva/Gerenciar'
+import Notificacao from './pages/Notificacao'
+import QuandoDeReserva from './pages/QuadroDeReserva'
 export const Rotas = () => {
     
     return(
@@ -44,6 +46,14 @@ export const Rotas = () => {
                 <Route 
                     path="/gerenciareserva/:Id" 
                     element={<AdicionarReserva />} 
+                />
+                <Route
+                    path='/notificacao'
+                    element={<Notificacao/>}
+                />
+                                <Route
+                    path='/quadrodereserva'
+                    element={<QuandoDeReserva/>}
                 />
             </Routes>
         </BrowserRouter>
