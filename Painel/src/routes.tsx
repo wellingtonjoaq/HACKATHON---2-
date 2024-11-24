@@ -4,11 +4,12 @@ import {
     Route
 } from 'react-router-dom'
 import Login from './pages/Login'
-import PaginaDeExemplo from './pages/PaginaDeExemplo'
 import Usuarios from './pages/Usuarios'
 import GerenciarUsuarios from './pages/Usuarios/Gerenciar'
+import PainelEspaco from './pages/PainelEspaco'
+import AdicionarEspaco from './pages/PainelEspaco/Gerenciar'
 import Notificacao from './pages/Notificacao'
-
+import QuandoDeReserva from './pages/QuadroDeReserva'
 
 export const Rotas = () => {
     
@@ -33,13 +34,18 @@ export const Rotas = () => {
                     path='/notificacao'
                     element={<Notificacao/>}
                 />
-                
-
                 <Route
-                    path='/exemplo'
-                    element={<PaginaDeExemplo />}
+                    path='/painelespaco'
+                    element={<PainelEspaco />}
                 />
-
+                                <Route
+                    path='/painelespaco/:id'
+                    element={<AdicionarEspaco/>}
+                />
+                <Route
+                    path='/quadrodereserva'
+                    element={<QuandoDeReserva/>}
+                />
             </Routes>
         </BrowserRouter>
     )

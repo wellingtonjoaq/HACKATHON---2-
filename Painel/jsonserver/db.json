@@ -13,6 +13,45 @@
       "nome": "Wellington",
       "permissoes": "professor",
       "id": 2
+    },
+    {
+      "email": "julio@gmail.com",
+      "password": "$2a$10$fEi0pECqE2u0LVdbY80fJuRNQlV5ftZcFyr8Wmqfm25fHfRNmmjW.",
+      "nome": "Julio",
+      "permissoes": "admin",
+      "id": 3
+    }
+  ],
+  "espaco": [
+    {
+      "nome": "Auditório",
+      "capacidade": "45",
+      "localizado": "Térreo",
+      "id": 1
+    },
+    {
+      "nome": "Biblioteca",
+      "capacidade": "60",
+      "localizado": "Térreo",
+      "id": 2
+    },
+    {
+      "nome": "Sala 15",
+      "capacidade": "40",
+      "localizado": "2ª Andar",
+      "id": 3
+    },
+    {
+      "nome": "Sala 20",
+      "capacidade": "40",
+      "localizado": "3ª Andar",
+      "id": 4
+    },
+    {
+      "nome": "Sala 20",
+      "capacidade": "20",
+      "localizado": "2ª Andar",
+      "id": 5
     }
   ]
 }

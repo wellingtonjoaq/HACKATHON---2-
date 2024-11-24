@@ -124,7 +124,7 @@ export const ProfessorDashboard = (props: IProps) => {
                                 <li className="nav-item py-2">
                                     <Link
                                         className="nav-link d-flex align-items-center text-dark"
-                                        to={'/usuarios'}
+                                        to={'/notificacao'}
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +142,7 @@ export const ProfessorDashboard = (props: IProps) => {
                                 <li className="nav-item py-2">
                                     <Link
                                         className="nav-link d-flex align-items-center text-dark"
-                                        to={'/dashboard'}
+                                        to={'/quadrodereserva'}
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -196,6 +196,7 @@ export const ProfessorDashboard = (props: IProps) => {
                     </nav>
                 </div>
             </div>
+
         </>
     )
 }
