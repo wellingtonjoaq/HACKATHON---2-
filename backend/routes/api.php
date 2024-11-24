@@ -20,13 +20,14 @@ Route::post('register', [RegisterController::class, 'create']);
 
 Route::prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'index']);
+    Route::get('{id}', [UserController::class, 'show']);
     Route::put('{id}', [UserController::class, 'update']);
     Route::delete('{id}', [UserController::class, 'destroy']);
-})->middleware('auth:sanctum');
+});
 
 Route::prefix('notificacao')->group(function () {
     Route::get('/', [NotificacaoController::class, 'index']);
     Route::post('/', [NotificacaoController::class, 'store']);
     Route::put('{id}', [NotificacaoController::class, 'update']);
     Route::delete('{id}', [NotificacaoController::class, 'destroy']);
-})->middleware('auth:sanctum');
+});

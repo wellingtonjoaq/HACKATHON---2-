@@ -50,7 +50,7 @@ export default function Espacos() {
             navigate("/");
         }
 
-        if (!validaPermissao(["admin", "professor"], token?.user.permissoes)) {
+        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
             navigate("/espacos");
         }
 

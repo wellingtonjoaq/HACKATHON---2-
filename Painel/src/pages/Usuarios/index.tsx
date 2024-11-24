@@ -8,9 +8,9 @@ import axios from "axios";
 
 interface IUsuarios {
     id: number;
-    nome: string;
+    name: string;
     email: string;
-    permissoes: string;
+    papel: string;
 }
 
 export default function Usuarios() {
@@ -20,47 +20,15 @@ export default function Usuarios() {
     const [dadosUsuarios, setDadosUsuarios] = useState<Array<IUsuarios>>([]);
     const [filtro, setFiltro] = useState<string>("");
 
-    useEffect(() => {
-        let lsStorage = localStorage.getItem("painel.token");
-
-        let token: IToken | null = null;
-
-        if (typeof lsStorage === "string") {
-            token = JSON.parse(lsStorage);
-        }
-
-        if (!token || verificaTokenExpirado(token.accessToken)) {
-            navigate("/");
-        }
-
-        if (!validaPermissao(["admin", "professor"], token?.user.permissoes)) {
-            navigate("/usuarios");
-        }
-
-        console.log("Pode desfrutar do sistema :D");
-
-        setLoading(true);
-        axios
-            .get("http://localhost:3001/users")
-            .then((res) => {
-                setDadosUsuarios(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setLoading(false);
-                console.log(err);
-            });
-    }, []);
-
     const usuariosFiltrados = dadosUsuarios.filter((usuario) => {
         if (!filtro) return true;
-        return usuario.permissoes === filtro;
+        return usuario.papel === filtro;
     });
 
     const excluirUsuario = (id: number) => {
         if (window.confirm("Você tem certeza que deseja excluir este usuário?")) {
             axios
-                .delete(`http://localhost:3001/users/${id}`)
+                .delete(`http://localhost:8000/api/user/${id}`)
                 .then(() => {
                     setDadosUsuarios(dadosUsuarios.filter((usuario) => usuario.id !== id));
                 })
@@ -72,32 +40,35 @@ export default function Usuarios() {
 
     useEffect(() => {
         let lsStorage = localStorage.getItem("painel.token");
+
         let token: IToken | null = null;
-    
+
         if (typeof lsStorage === "string") {
             token = JSON.parse(lsStorage);
         }
-    
+
         if (!token || verificaTokenExpirado(token.accessToken)) {
             navigate("/");
         }
-    
-        if (!validaPermissao(["admin", "professor"], token?.user.permissoes)) {
+
+        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
             navigate("/usuarios");
         }
-    
+
+        console.log("Pode desfrutar do sistema :D");
+
         setLoading(true);
         axios
-            .get("http://localhost:3001/users")
-            .then((res) => {
-                setDadosUsuarios(res.data);
+            .get("http://localhost:8000/api/user/")
+            .then((response) => {
+                setDadosUsuarios(response.data);
                 setLoading(false);
             })
-            .catch((err) => {
+            .catch((error) => {
                 setLoading(false);
-                console.log(err);
+                console.log(error);
             });
-    }, [navigate]);
+    }, []);
 
     return (
         <>
@@ -167,9 +138,9 @@ export default function Usuarios() {
                                 return (
                                     <tr key={index}>
                                         <th scope="row">{usuario.id}</th>
-                                        <td>{usuario.nome}</td>
+                                        <td>{usuario.name}</td>
                                         <td>{usuario.email}</td>
-                                        <td>{usuario.permissoes}</td>
+                                        <td>{usuario.papel}</td>
                                         <td
                                             className="text-end"
                                             style={{ paddingRight: "20px" }}
