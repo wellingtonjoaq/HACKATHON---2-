@@ -116,114 +116,119 @@ export const LayoutDashboard = (props: IProps) => {
                     </button>
 
                     <nav
-                        id="sidebarMenu"
-                        className={`col-md-3 col-lg-2 d-md-block bg-light sidebar collapse border-end border-dark ${menuVisible ? 'show' : ''}`}
-                        style={{
-                            height: "700px"
-                        }}
-                    >
-                        <div className="position-sticky pt-3">
-                            <ul className="nav flex-column text-dark">
-                                <li className="nav-item py-2">
-                                    <Link
-                                        className="nav-link d-flex align-items-center text-dark"
-                                        to={'/usuarios'}
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="20"
-                                            height="20"
-                                            fill="currentColor"
-                                            className="bi bi-people-fill me-2"
-                                            viewBox="0 0 16 16"
+                            id="sidebarMenu"
+                            className={`col-md-3 col-lg-2 d-md-block bg-light sidebar collapse border-end border-dark ${menuVisible ? 'show' : ''}`}
+                            style={{
+                                height: "700px"
+                            }}
+                        >
+                            <div className="position-sticky pt-3">
+                                <ul className="nav flex-column text-dark">
+                                    <li className="nav-item py-2">
+                                        <Link
+                                            className="nav-link d-flex align-items-center text-dark"
+                                            to={'/usuarios'}
                                         >
-                                            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
-                                        </svg>
-                                        Usuários
-                                    </Link>
-                                </li>
-                                <li className="nav-item py-2">
-                                    <Link
-                                        className="nav-link d-flex align-items-center text-dark"
-                                        to={'/painelespaco'}
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="20"
-                                            height="20"
-                                            fill="currentColor"
-                                            className="bi bi-border-all me-2"
-                                            viewBox="0 0 16 16"
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="20"
+                                                height="20"
+                                                fill="currentColor"
+                                                className="bi bi-people-fill me-2"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
+                                            </svg>
+                                            Usuários
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item py-2">
+                                        <Link
+                                            className="nav-link d-flex align-items-center text-dark"
+                                            to={'/painelespaco'}
                                         >
-                                            <path d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z" />
-                                        </svg>
-                                        Painel Espaço
-                                    </Link>
-                                </li>
-                                <li className="nav-item py-2">
-                                    <Link
-                                        className="nav-link d-flex align-items-center text-dark"
-                                        to={'/dashboard'}
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="20"
-                                            height="20"
-                                            fill="currentColor"
-                                            className="bi bi-pencil-square me-2"
-                                            viewBox="0 0 16 16"
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="20"
+                                                height="20"
+                                                fill="currentColor"
+                                                className="bi bi-border-all me-2"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z" />
+                                            </svg>
+                                            Painel Espaço
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item py-2">
+                                        <Link
+                                            className="nav-link d-flex align-items-center text-dark"
+                                            to={'/reserva'}
                                         >
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M1 13.5A1.5 1.5 0 0 0 2.5 12h11a1.5 1.5 0 0 0 1.5 1.5v2a.5.5 0 0 1-.5.5H1a.5.5 0 0 1-.5-.5v-2z"
-                                            />
-                                        </svg>
-                                        Gerenciar Reserva
-                                    </Link>
-                                </li>
-                                <li className="nav-item py-2">
-                                    <Link
-                                        className="nav-link d-flex align-items-center text-dark"
-                                        to={'/dashboard'}
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="20"
-                                            height="20"
-                                            fill="currentColor"
-                                            className="bi bi-arrow-clockwise me-2"
-                                            viewBox="0 0 16 16"
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="20"
+                                                height="20"
+                                                fill="currentColor"
+                                                className="bi bi-pencil-square me-2"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 12h11a1.5 1.5 0 0 0 1.5 1.5v2a.5.5 0 0 1-.5.5H1a.5.5 0 0 1-.5-.5v-2z"
+                                                />
+                                            </svg>
+                                            Gerenciar Reserva
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item py-2">
+                                        <Link
+                                            className="nav-link d-flex align-items-center text-dark"
+                                            to={'/dashboard'}
                                         >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"
-                                            />
-                                            <path
-                                                d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"
-                                            />
-                                        </svg>
-                                        Histórico
-                                    </Link>
-                                </li>
-                                <li className="nav-item py-2">
-                                    <button
-                                        onClick={handleLogout}
-                                        className="btn btn-danger py-2 mb-0"
-                                        style={{ width: '100%' }}
-                                    >
-                                        Sair
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-
-                    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                        {props.children}
-                    </main>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="20"
+                                                height="20"
+                                                fill="currentColor"
+                                                className="bi bi-arrow-clockwise me-2"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"
+                                                />
+                                                <path
+                                                    d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"
+                                                />
+                                            </svg>
+                                            Histórico
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item py-2">
+                                        <button
+                                            onClick={handleLogout}
+                                            className="btn btn-danger py-2 mb-0"
+                                            style={{ 
+                                                width: '100%',
+                                                border: "solid black",
+                                                position: "relative",
+                                                top: "380px"
+                                            }}  
+                                        >
+                                            Sair
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+    
+                        <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                            {props.children}
+                        </main>
+                    </div>
                 </div>
-            </div>
-        </>
-    );
-};
+            </>
+        );
+    }

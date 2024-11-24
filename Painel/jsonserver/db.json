@@ -63,5 +63,15 @@
       ],
       "id": 3
     }
+  ],
+  "reservas": [
+    {
+      "id": 1,
+      "espacoId": 1,
+      "usuarioId": 1,
+      "nome": "João Silva",
+      "dataReserva": "2024-12-01",
+      "horarioInicio": "14:00"
+    }
   ]
 }
