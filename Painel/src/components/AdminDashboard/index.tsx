@@ -7,28 +7,37 @@ interface IProps {
 }
 
 export const LayoutDashboard = (props: IProps) => {
-    const [token, setToken] = useState<IToken>()
+    
     const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('painel.token');
+        navigate('/');
+    };
+
+    const [token, setToken] = useState<IToken>()
+
     const [menuVisible, setMenuVisible] = useState(false);
     
     const toggleMenu = () => {
         setMenuVisible(!menuVisible);
     };
 
+    
+
     useEffect(() => {
-        let lsToken = localStorage.getItem('painel.token')
+        let lsToken =
+            localStorage.getItem('painel.token')
 
-        if (!lsToken) {
-            navigate('/')
-        } else {
-            setToken(JSON.parse(lsToken))
+        let token: IToken | undefined
+
+        if (typeof lsToken === 'string') {
+            token = JSON.parse(lsToken)
+            setToken(token)
         }
-    }, [navigate]);
+    }, [])
 
-    const handleLogout = () => {
-        localStorage.removeItem('painel.token');
-        navigate('/');
-    };
+    
     
         return (
             <>

@@ -21,18 +21,20 @@ return new class extends Migration
                   ->on('users') // Nome da tabela referenciada
                   ->onDelete('cascade'); // Ação ao excluir o registro na tabela 'usuarios'
 
-            $table->unsignedBigInteger('ambiente_id'); // Coluna da chave estrangeira
+            $table->unsignedBigInteger('espaco_id'); // Coluna da chave estrangeira
 
                   // Definindo a chave estrangeira
-                  $table->foreign('ambiente_id') // Nome da coluna que será chave estrangeira
+                  $table->foreign('espaco_id') // Nome da coluna que será chave estrangeira
                         ->references('id') // Coluna referenciada na tabela 'ambientes'
-                        ->on('ambientes') // Nome da tabela referenciada
+                        ->on('espacos') // Nome da tabela referenciada
                         ->onDelete('cascade'); // Ação ao excluir o registro na tabela 'ambientes'
 
             $table->string('horario_inicio');
             $table->string('horario_fim');
             $table->date('data');
             $table->string('status');
+            $table->string('assunto');
+            $table->string('observacao');
 
             $table->timestamps();
         });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Historico_reserva;
+use App\Models\Reserva;
 use Illuminate\Http\Request;
 
 class Historico_reservaController extends Controller
@@ -22,7 +23,14 @@ class Historico_reservaController extends Controller
      */
     public function create()
     {
-        return view('historico_reservas.create');
+        $historico_reserva = new Historico_reserva();
+
+        $reservas = Reserva::all();
+
+        return response()->json([
+            'historico_reserva' => $historico_reserva,
+            'reservas' => $reservas
+        ]);
     }
 
     /**
@@ -30,22 +38,28 @@ class Historico_reservaController extends Controller
      */
     public function store(Request $request)
     {
-        $dados = $request->validate([
-            'reserva_id' => 'required|exists:reservas,id',
-            'alteracoes' => 'required|string',
-            'modificado_em' => 'required|date'
-        ]);
-
         try {
-            $historico_reserva = Historico_reserva::create($dados);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erro ao ver o historico da reserva. Por favor, tente novamente.'], 500);
-        }
+            $dados = $this->validateRequest($request);
 
-        return response()->json([
-            'message' => 'historico da reserva',
-            'historico_reserva' => $historico_reserva
-        ], 201);
+            $Historico_reserva = Historico_reserva::create($dados);
+
+            return response()->json([
+                'message' => 'Historico da Reserva criado com sucesso!',
+                'Historico_reserva' => $Historico_reserva
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $e->errors(),
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao salvar o Historico reserva. Por favor, tente novamente.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -84,22 +98,28 @@ class Historico_reservaController extends Controller
     {
         $historico_reserva = Historico_reserva::find($id);
 
-        $dados = $request->validate([
-            'reserva_id' => 'required|exists:reservas,id',
-            'alteracoes' => 'required|string',
-            'modificado_em' => 'required|date'
-        ]);
-
         try {
-            $historico_reserva->update($dados);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erro ao ver o historico da reserva. Por favor, tente novamente.'], 500);
-        }
+            $dados = $this->validateRequest($request);
 
-        return response()->json([
-            'message' => 'historico da reserva',
-            'historico_reserva' => $historico_reserva
-        ], 201);
+            $historico_reserva->update($dados);
+
+            return response()->json([
+                'message' => 'historico da Reserva atualizado com sucesso!',
+                'historico_reserva' => $historico_reserva
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $e->errors(),
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao atualizar a Historico reserva. Por favor, tente novamente.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -116,5 +136,21 @@ class Historico_reservaController extends Controller
         $historico_reserva->delete();
 
         return response()->json(['mensagem' => 'Historico da reserva excluída com sucesso!']);
+    }
+
+    private function validateRequest(Request $request)
+    {
+        return $request->validate([
+            'reserva_id' => 'required|exists:reservas,id',
+            'alteracoes' => 'required|string',
+            'modificado_em' => 'required|date',
+        ], [
+            'reserva_id.required' => 'O campo reserva é obrigatório.',
+            'reserva_id.exists' => 'A reserva selecionada não existe.',
+            'alteracoes.required' => 'O campo alterações é obrigatório.',
+            'alteracoes.string' => 'O campo alterações deve ser um texto válido.',
+            'modificado_em.required' => 'O campo modificado em é obrigatório.',
+            'modificado_em.date' => 'O campo modificado em deve estar em um formato de data válido (AAAA-MM-DD).',
+        ]);
     }
 }

@@ -51,8 +51,8 @@ export default function Usuarios() {
             navigate("/");
         }
 
-        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
-            navigate("/usuarios");
+        if (!validaPermissao(["admin"], token?.user.papel)) {
+            navigate("/");
         }
 
         console.log("Pode desfrutar do sistema :D");
