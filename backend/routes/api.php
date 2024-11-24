@@ -7,8 +7,10 @@ use App\Http\Controllers\Historico_reservaController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\NotificacaoController;
 use Illuminate\Support\Facades\Route;
 
+//Buscar no banco usuario autenticado
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -16,15 +18,15 @@ Route::get('/user', function (Request $request) {
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout']);
 
+//registrar um usuario no banco
 Route::post('register', [RegisterController::class, 'create']);
 
 Route::prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'index']);
+    Route::get('{id}', [UserController::class, 'show']);
     Route::put('{id}', [UserController::class, 'update']);
     Route::delete('{id}', [UserController::class, 'destroy']);
 });
-
-
 Route::prefix('ambiente')->group(function () {
     Route::get('/', [AmbienteController::class, 'index'])->name('ambiente.index');
     Route::get('create', [AmbienteController::class, 'create'])->name('ambiente.create');
@@ -53,4 +55,11 @@ Route::prefix('historico_reserva')->group(function () {
     Route::post('/', [Historico_reservaController::class, 'store'])->name('historico_reserva.store');
     Route::put('{id}', [Historico_reservaController::class, 'update'])->name('historico_reserva.update');
     Route::delete('{id}', [Historico_reservaController::class, 'destroy'])->name('historico_reserva.destroy');
+});
+
+Route::prefix('notificacao')->group(function () {
+    Route::get('/', [NotificacaoController::class, 'index']);
+    Route::post('/', [NotificacaoController::class, 'store']);
+    Route::put('{id}', [NotificacaoController::class, 'update']);
+    Route::delete('{id}', [NotificacaoController::class, 'destroy']);
 });

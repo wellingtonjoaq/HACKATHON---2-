@@ -1,24 +1,66 @@
 {
   "users": [
     {
-      "id": 1,
-      "email": "admin@gmail.com",
-      "password": "$2a$10$Y4/4ws04wYotZQg2RB1bwurp7W6RCq.NLrUEEONlOZEdjLXCVG/LW",
       "nome": "Admin",
-      "permissoes": "admin"
+      "email": "admin@gmail.com",
+      "permissoes": "admin",
+      "password": "$2a$10$Q8RG0nOaQSy3wCuphnZf0uC4XRtAL4PpaoZlEvlTACqZQKMuIHvJS",
+      "id": 1
     },
     {
-      "email": "yuri@gmail.com",
-      "password": "$2a$10$bx/TzDM.mrRiqFaSP6UxIedNuQj8P7bzIBxRs5MKVcOjv/25UGOz2",
-      "nome": "Yuri Alberto",
-      "permissoes": "admin",
+      "email": "wellington@gmail.com",
+      "password": "$2a$10$55lpeF61zlTdfcdnHZ.h5eN.oiYR.lvWnQjtc3MvianDI0mxfmosa",
+      "nome": "Wellington",
+      "permissoes": "professor",
       "id": 2
     },
     {
-      "nome": "Yamal",
-      "email": "lamine@gmail.com",
-      "permissoes": "colaborador",
-      "password": "$2a$10$/1PN0nlWU6BH00Z1oyrSVeUbg1nDzvmKAqC6rAJZhkZ/WtynbkVdu",
+      "email": "julio@gmail.com",
+      "password": "$2a$10$fEi0pECqE2u0LVdbY80fJuRNQlV5ftZcFyr8Wmqfm25fHfRNmmjW.",
+      "nome": "Julio",
+      "permissoes": "admin",
+      "id": 3
+    }
+  ],
+  "espaco": [
+    {
+      "nome": "Auditório",
+      "capacidade": "255",
+      "localizado": "Térreo",
+      "disponibilidadeInicio": "19:00 PM",
+      "disponibilidadeFim": "22:25 PM",
+      "recursosInstalados": [
+        "Microfone",
+        "Lousa",
+        "Computador",
+        "Projetor"
+      ],
+      "id": 1
+    },
+    {
+      "nome": "Sala 15",
+      "capacidade": "40",
+      "localizado": "2ª Andar",
+      "disponibilidadeInicio": "20:55 PM",
+      "disponibilidadeFim": "22:25 PM",
+      "recursosInstalados": [
+        "Lousa",
+        "Projetor"
+      ],
+      "id": 2
+    },
+    {
+      "nome": "Sala 20",
+      "capacidade": "40",
+      "localizado": "3ª Andar",
+      "disponibilidadeInicio": "19:00 PM",
+      "disponibilidadeFim": "22:25 PM",
+      "recursosInstalados": [
+        "Microfone",
+        "Lousa",
+        "Computador",
+        "Projetor"
+      ],
       "id": 3
     }
   ]

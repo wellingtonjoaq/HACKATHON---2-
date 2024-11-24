@@ -16,21 +16,48 @@ class RegisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function create(Request $request)
-    {
+    public function create(Request $request)
+{
+    // Validação dos dados recebidos
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => [
+            'required',
+            'email',
+            'unique:users,email',
+            'max:255',
+            function ($attribute, $value, $fail) {
+                if (!str_ends_with($value, '@gmail.com')) {
+                    $fail('O email deve ser um endereço válido do domínio @gmail.com.');
+                }
+            },
+        ],
+        'papel' => 'required|string|max:50',
+        'password' => 'required|string|min:8', // Confirmado
+    ]);
 
-            // Validação dos dados recebidos
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email|max:255',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return response()->json($user);
+    // Retornar erros de validação, se existirem
+    if ($validator->fails()) {
+        return response()->json([
+            'errors' => $validator->errors()
+        ], 422);
     }
+
+    // Criar usuário com dados validados
+    $validatedData = $validator->validated();
+
+    $user = User::create([
+        'name' => $validatedData['name'],
+        'email' => $validatedData['email'],
+        'papel' => $validatedData['papel'], // Certifica que o campo "papel" é usado corretamente
+        'password' => Hash::make($validatedData['password']),
+    ]);
+
+    // Retornar o usuário criado
+    return response()->json([
+        'message' => 'Usuário criado com sucesso',
+        'user' => $user,
+    ], 201);
+}
+
 }
