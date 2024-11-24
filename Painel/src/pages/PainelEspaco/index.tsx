@@ -21,9 +21,9 @@ export default function Espacos() {
     const [filtro, setFiltro] = useState<string>("");
 
     const espacosFiltrados = dadosEspacos.filter((espaco) => {
-        if (!filtro) return true;
-        return espaco.nome.toLowerCase().includes(filtro.toLowerCase());
-    });
+        if (!filtro) return true; 
+        return espaco.localizado.toLowerCase().includes(filtro.toLowerCase());
+    });    
 
     const excluirEspaco = (id: number) => {
         if (window.confirm("Você tem certeza que deseja excluir este espaço?")) {
@@ -50,8 +50,8 @@ export default function Espacos() {
             navigate("/");
         }
 
-        if (!validaPermissao(["admin", "professor"], token?.user.permissoes)) {
-            navigate("/espacos");
+        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
+            navigate("/painelespaco");
         }
 
         setLoading(true);
@@ -94,13 +94,13 @@ export default function Espacos() {
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownFiltro" style={{ textAlign: "center", width: "200px" }}>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("localização")}>Térreo</button>
+                                    <button className="dropdown-item" onClick={() => setFiltro("Térreo")}>Térreo</button>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("localização")}>2ª Andar</button>
+                                    <button className="dropdown-item" onClick={() => setFiltro("2ª Andar")}>2ª Andar</button>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("localização")}>3ª Andar</button>
+                                    <button className="dropdown-item" onClick={() => setFiltro("3ª Andar")}>3ª Andar</button>
                                 </li>
                                 <li>
                                     <button className="dropdown-item" onClick={() => setFiltro("")}>Todos</button>

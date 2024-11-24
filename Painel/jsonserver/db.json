@@ -25,33 +25,35 @@
   "espaco": [
     {
       "nome": "Auditório",
-      "capacidade": "45",
+      "capacidade": "255",
       "localizado": "Térreo",
+      "disponibilidadeInicio": "19:00 PM",
+      "disponibilidadeFim": "22:25 PM",
+      "recursosInstalados": [
+        "Microfone",
+        "Lousa",
+        "Computador",
+        "Projetor"
+      ],
       "id": 1
-    },
-    {
-      "nome": "Biblioteca",
-      "capacidade": "60",
-      "localizado": "Térreo",
-      "id": 2
     },
     {
       "nome": "Sala 15",
       "capacidade": "40",
       "localizado": "2ª Andar",
-      "id": 3
+      "disponibilidadeInicio": "20:55 PM",
+      "disponibilidadeFim": "22:25 PM",
+      "recursosInstalados": [
+        "Lousa",
+        "Projetor"
+      ],
+      "id": 2
     },
     {
       "nome": "Sala 20",
       "capacidade": "40",
       "localizado": "3ª Andar",
       "id": 4
-    },
-    {
-      "nome": "Sala 20",
-      "capacidade": "20",
-      "localizado": "2ª Andar",
-      "id": 5
     }
   ]
 }
