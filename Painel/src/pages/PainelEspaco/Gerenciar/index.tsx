@@ -8,10 +8,13 @@ import { LayoutDashboard } from "../../../components/AdminDashboard";
 
 // Definindo a interface para os dados do espaço
 interface IEspacos {
-    id?: number;  // O campo `id` pode ser opcional ao adicionar um novo espaço
+    id?: number;
     nome: string;
     capacidade: string;
     localizado: string;
+    disponibilidadeInicio: string;
+    disponibilidadeFim: string;
+    recursosInstalados: string[];
 }
 
 export default function AdicionarEspaco() {
@@ -21,12 +24,31 @@ export default function AdicionarEspaco() {
     const [nome, setNome] = useState<string>("");
     const [capacidade, setCapacidade] = useState<string>("");
     const [localizado, setLocalizado] = useState<string>("");
+    const [disponibilidadeInicio, setDisponibilidadeInicio] = useState<string>("");
+    const [disponibilidadeFim, setDisponibilidadeFim] = useState<string>("");
+    const [recursosInstalados, setRecursosInstalados] = useState<string[]>([]);
     const [error, setError] = useState<string>("");
+
+    const recursos = ["Microfone", "Lousa", "Computador", "Projetor"];
+
+    // Função que altera os recursos instalados com base na seleção
+    const handleRecursoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value, checked } = e.target;
+        setRecursosInstalados((prevRecursos) => {
+            if (checked) {
+                // Adiciona o recurso à lista se selecionado
+                return [...prevRecursos, value];
+            } else {
+                // Remove o recurso da lista se desmarcado
+                return prevRecursos.filter((recurso) => recurso !== value);
+            }
+        });
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!nome || !capacidade || !localizado) {
+        if (!nome || !capacidade || !localizado || !disponibilidadeInicio || !disponibilidadeFim || recursosInstalados.length === 0) {
             setError("Todos os campos são obrigatórios!");
             return;
         }
@@ -36,6 +58,9 @@ export default function AdicionarEspaco() {
             nome,
             capacidade,
             localizado,
+            disponibilidadeInicio,
+            disponibilidadeFim,
+            recursosInstalados,
         };
 
         setLoading(true);
@@ -149,24 +174,72 @@ export default function AdicionarEspaco() {
                                 </div>
                             </div>
 
-                            {error && (
-                                <div className="col-12">
-                                    <div className="alert alert-danger">{error}</div>
+                            {/* Disponibilidade */}
+                            <div className="col-12 col-md-6 mb-4">
+                                <div className="form-group">
+                                    <label htmlFor="disponibilidadeInicio">Disponibilidade Início</label>
+                                    <select
+                                        id="disponibilidadeInicio"
+                                        className="form-control"
+                                        value={disponibilidadeInicio}
+                                        onChange={(e) => setDisponibilidadeInicio(e.target.value)}
+                                    >
+                                        <option value="">Selecione o horário de início</option>
+                                        <option value="08:00">08:00</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="14:00">14:00</option>
+                                        <option value="16:00">16:00</option>
+                                    </select>
                                 </div>
-                            )}
+                            </div>
 
-                            <div className="col-12 mb-4">
-                                <button
-                                    type="submit"
-                                    className="btn btn-success"
-                                    style={{
-                                        padding: "10px 20px",
-                                        fontSize: "17px",
-                                        borderRadius: "5px",
-                                    }}
-                                >
-                                    Adicionar Espaço
-                                </button>
+                            <div className="col-12 col-md-6 mb-4">
+                                <div className="form-group">
+                                    <label htmlFor="disponibilidadeFim">Disponibilidade Fim</label>
+                                    <select
+                                        id="disponibilidadeFim"
+                                        className="form-control"
+                                        value={disponibilidadeFim}
+                                        onChange={(e) => setDisponibilidadeFim(e.target.value)}
+                                    >
+                                        <option value="">Selecione o horário de fim</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="12:00">12:00</option>
+                                        <option value="18:00">18:00</option>
+                                        <option value="20:00">20:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Recursos Instalados com checkbox */}
+                            <div className="col-12 col-md-6 mb-4">
+                                <div className="form-group">
+                                    <label htmlFor="recursosInstalados">Recursos Instalados</label>
+                                    <div>
+                                        {recursos.map((recurso) => (
+                                            <div key={recurso} className="form-check">
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    id={recurso}
+                                                    value={recurso}
+                                                    onChange={handleRecursoChange}
+                                                    checked={recursosInstalados.includes(recurso)}
+                                                />
+                                                <label className="form-check-label" htmlFor={recurso}>
+                                                    {recurso}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Exibindo erros */}
+                            {error && <div className="alert alert-danger">{error}</div>}
+
+                            <div className="col-12 text-center">
+                                <button type="submit" className="btn btn-primary">Adicionar Espaço</button>
                             </div>
                         </div>
                     </form>
@@ -175,3 +248,4 @@ export default function AdicionarEspaco() {
         </>
     );
 }
+  

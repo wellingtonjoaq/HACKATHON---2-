@@ -7,10 +7,10 @@ import axios from "axios";
 import { LayoutDashboard } from "../../../components/AdminDashboard";
 
 interface IForm {
-    nome: string
-    email: string
-    password?: string
-    permissoes: string
+    nome: string;
+    email: string;
+    password?: string;
+    permissoes: string;
 }
 
 export default function GerenciarUsuarios() {
@@ -67,6 +67,7 @@ export default function GerenciarUsuarios() {
                         navigate('/usuarios');
                     })
                     .catch((err) => {
+                        // handle error
                     });
             } else {
                 axios.post('http://localhost:3001/users', data)
@@ -83,7 +84,7 @@ export default function GerenciarUsuarios() {
         <>
             <LayoutDashboard>
                 <div className="container d-flex justify-content-center align-items-center min-vh-100" style={{ marginTop: "-100px" }}>
-                    <div className="p-4 rounded border border-dark" style={{ backgroundColor: "#f0f0f0", width: "100%", maxWidth: "800px" }}>
+                    <div className="p-4 rounded border border-dark" style={{ backgroundColor: "#f0f0f0", width: "100%", maxWidth: "800px", border: "2px solid black" }}>
                         <h1 className="mb-4 text-center">{isEdit ? "Editar Usuário" : "Adicionar Usuário"}</h1>
                         <form
                             className="needs-validation mb-3"
