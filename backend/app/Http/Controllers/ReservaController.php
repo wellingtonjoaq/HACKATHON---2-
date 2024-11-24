@@ -144,8 +144,8 @@ class ReservaController extends Controller
     private function validateRequest(Request $request)
     {
         return $request->validate([
-            'usuario_id' => 'required|exists:users,id',
-            'espaco_id' => 'required|exists:espacos,id',
+            'usuario_id' => 'required|exists:users,id', // Verifica se o ID existe na tabela 'users'
+            'espaco_id' => 'required|exists:espacos,id', // Verifica se o ID existe na tabela 'ambientes'
             'horario_inicio' => 'required|string',
             'horario_fim' => 'required|string',
             'data' => 'required|date',

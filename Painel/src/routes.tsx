@@ -7,6 +7,10 @@ import Login from './pages/Login'
 import Usuarios from './pages/Usuarios'
 import GerenciarUsuarios from './pages/Usuarios/Gerenciar'
 import PainelEspaco from './pages/PainelEspaco'
+import Reservas from './pages/GerenciarReserva'
+import AdicionarReserva from './pages/GerenciarReserva/Gerenciar'
+import Notificacao from './pages/Notificacao'
+import QuandoDeReserva from './pages/QuadroDeReserva'
 import AdicionarEspaco from './pages/PainelEspaco/Gerenciar'
 export const Rotas = () => {
     
@@ -31,9 +35,25 @@ export const Rotas = () => {
                     path='/painelespaco'
                     element={<PainelEspaco />}
                 />
-                                <Route
+                <Route
                     path='/painelespaco/:id'
-                    element={<AdicionarEspaco/>}
+                    element={<AdicionarEspaco />}
+                />
+                <Route
+                    path='/reserva'
+                    element={<Reservas />}
+                />
+                <Route 
+                    path="/reserva/:id" 
+                    element={<AdicionarReserva />} 
+                />
+                <Route
+                    path='/notificacao'
+                    element={<Notificacao/>}
+                />
+                                <Route
+                    path='/quadrodereserva'
+                    element={<QuandoDeReserva/>}
                 />
             </Routes>
         </BrowserRouter>
