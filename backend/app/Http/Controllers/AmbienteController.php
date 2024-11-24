@@ -13,7 +13,8 @@ class AmbienteController extends Controller
     public function index()
     {
         $ambientes = Ambiente::get();
-        return $ambientes;
+
+        return response()->json($ambientes);
     }
 
     /**
@@ -21,33 +22,42 @@ class AmbienteController extends Controller
      */
     public function create()
     {
-        return view('ambientes.create');
+        $ambiente = new Ambiente();
+
+        return response()->json($ambiente);
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $dados = $request->validate([
-            'nome' => 'required|string|max:255',
-            'tipo' => 'required|string',
-            'status' => 'required|string',
-            'descricao' => 'required|string',
-        ]);
+{
+    try {
+        $dados = $this->validateRequest($request);
 
-        try {
-            $ambiente = Ambiente::create($dados);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erro ao salvar o ambiente. Por favor, tente novamente.'], 500);
-        }
+        $ambiente = Ambiente::create($dados);
 
         return response()->json([
             'message' => 'Ambiente criado com sucesso!',
             'ambiente' => $ambiente
         ], 201);
 
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'message' => 'Erro de validação',
+            'errors' => $e->errors(),
+        ], 422);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Erro ao salvar o ambiente. Por favor, tente novamente.',
+            'error' => $e->getMessage(),
+        ], 500);
     }
+}
+
+
     /**
      * Display the specified resource.
      */
@@ -55,7 +65,7 @@ class AmbienteController extends Controller
     {
         $ambiente = Ambiente::find($id);
 
-        return  $ambiente;
+        return response()->json($ambiente);
     }
 
     /**
@@ -65,7 +75,11 @@ class AmbienteController extends Controller
     {
         $ambiente = Ambiente::find($id);
 
-        return $ambiente;
+        if (!$ambiente) {
+            return response()->json(['mensagem' => 'Ambiente não encontrada.'], 404);
+        }
+
+        return response()->json($ambiente);
     }
 
     /**
@@ -75,16 +89,29 @@ class AmbienteController extends Controller
     {
         $ambiente = Ambiente::find($id);
 
-        $dados = $request->validate([
-            'nome' => 'required|string|max:255',
-            'tipo' => 'required|string',
-            'status' => 'required|string',
-            'descricao' => 'required|string',
-        ]);
+        try {
+            $dados = $this->validateRequest($request);
 
-        $ambiente->update($dados);
+            $ambiente->update($dados);
 
-        return redirect('/ambientes');
+            return response()->json([
+                'message' => 'Ambiente atualizado com sucesso!',
+                'ambiente' => $ambiente
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $e->errors(),
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao atualizar o ambiente. Por favor, tente novamente.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+
     }
 
     /**
@@ -96,6 +123,30 @@ class AmbienteController extends Controller
 
         $ambiente->delete();
 
-        return redirect('/ambiente');
+        return response()->json([
+            'message' => 'Ambiente removido com sucesso!'
+        ], 200);
+    }
+
+    private function validateRequest(Request $request)
+    {
+        return $request->validate([
+            'nome' => 'required|string|max:255',
+            'local' => 'required|string|max:255',
+            'capacidade' => 'required|string|max:100',
+            'recursos' => 'required|string|max:500',
+            'descricao' => 'required|string|max:1000',
+        ], [
+            'nome.required' => 'O campo nome é obrigatório.',
+            'local.required' => 'O campo local é obrigatório.',
+            'capacidade.required' => 'O campo capacidade é obrigatório.',
+            'recursos.required' => 'O campo recursos é obrigatório.',
+            'descricao.required' => 'O campo descrição é obrigatório.',
+            'nome.max' => 'O nome deve ter no máximo 255 caracteres.',
+            'local.max' => 'O local deve ter no máximo 255 caracteres.',
+            'capacidade.max' => 'A capacidade deve ter no máximo 100 caracteres.',
+            'recursos.max' => 'Os recursos devem ter no máximo 500 caracteres.',
+            'descricao.max' => 'A descrição deve ter no máximo 1000 caracteres.',
+        ]);
     }
 }

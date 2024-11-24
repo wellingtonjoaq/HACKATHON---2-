@@ -9,7 +9,7 @@ class Reserva extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['usuario_id', 'ambiente_id','horario_inicio', 'horario_fim', 'status'];
+    protected $fillable = ['usuario_id', 'ambiente_id','horario_inicio', 'horario_fim', 'status', 'data'];
 
     // Relacionamentos
     public function usuario()
