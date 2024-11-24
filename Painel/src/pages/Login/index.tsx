@@ -28,7 +28,7 @@ export default function Login() {
             }
 
 
-            axios.post('http://localhost:3001/login',
+            axios.post('http://localhost:8000/api/login',
                 {
                     email: target.email.value,
                     password: target.senha.value,
