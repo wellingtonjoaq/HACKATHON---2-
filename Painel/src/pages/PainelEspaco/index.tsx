@@ -110,7 +110,7 @@ export default function Espacos() {
                         <button
                             type="button"
                             className="btn btn-success"
-                            onClick={() => navigate("/espacos/criar")}
+                            onClick={() => navigate("/painelespaco/criar")}
                             style={{
                                 padding: "10px 20px",
                                 fontSize: "17px",
@@ -133,7 +133,7 @@ export default function Espacos() {
                 >
                     <div className="row">
                         {espacosFiltrados.map((espaco) => (
-                            <div className="col-12 col-md-4 mb-4" key={espaco.id}>
+                            <div className="col-12 col-sm-6 col-md-4 mb-4" key={espaco.id}>
                                 <div
                                     className="mb-3 p-3 border rounded"
                                     style={{
@@ -186,7 +186,7 @@ export default function Espacos() {
                                                 <li>
                                                     <button
                                                         className="dropdown-item"
-                                                        onClick={() => navigate(`/espacos/${espaco.id}`)}
+                                                        onClick={() => navigate(`/painelespaco/${espaco.id}`)}
                                                     >
                                                         Editar
                                                     </button>

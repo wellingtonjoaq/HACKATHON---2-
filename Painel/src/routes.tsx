@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Usuarios from './pages/Usuarios'
 import GerenciarUsuarios from './pages/Usuarios/Gerenciar'
 import PainelEspaco from './pages/PainelEspaco'
+import AdicionarEspaco from './pages/PainelEspaco/gerenciar'
 export const Rotas = () => {
     
     return(
@@ -29,6 +30,10 @@ export const Rotas = () => {
                 <Route
                     path='/painelespaco'
                     element={<PainelEspaco />}
+                />
+                                <Route
+                    path='/painelespaco/:id'
+                    element={<AdicionarEspaco/>}
                 />
             </Routes>
         </BrowserRouter>
