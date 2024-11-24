@@ -81,8 +81,18 @@ export default function GerenciarUsuarios() {
 
     return (
         <LayoutDashboard>
-            <div className="container d-flex justify-content-center align-items-center min-vh-100" style={{ marginTop: "-100px" }}>
-                <div className="p-4 rounded border border-dark" style={{ backgroundColor: "#dad5d5", width: "100%", maxWidth: "800px" }}>
+            <div className="container d-flex justify-content-center align-items-center min-vh-100" 
+                style={{ 
+                    marginTop: "-100px", 
+                }}
+            >
+                <div className="p-4 rounded border border-dark" 
+                    style={{ 
+                        backgroundColor: "#f8f9fa", 
+                        width: "100%", 
+                        maxWidth: "800px" 
+                    }}
+                >
                     <h1 className="mb-4 text-center">{isEdit ? "Editar Usuário" : "Adicionar Usuário"}</h1>
                     <form
                         className="needs-validation mb-3"

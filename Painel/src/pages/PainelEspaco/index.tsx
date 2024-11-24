@@ -21,9 +21,9 @@ export default function Espacos() {
     const [filtro, setFiltro] = useState<string>("");
 
     const espacosFiltrados = dadosEspacos.filter((espaco) => {
-        if (!filtro) return true;
-        return espaco.nome.toLowerCase().includes(filtro.toLowerCase());
-    });
+        if (!filtro) return true; 
+        return espaco.localizado.toLowerCase().includes(filtro.toLowerCase());
+    });    
 
     const excluirEspaco = (id: number) => {
         if (window.confirm("Você tem certeza que deseja excluir este espaço?")) {
@@ -51,7 +51,7 @@ export default function Espacos() {
         }
 
         if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
-            navigate("/espacos");
+            navigate("/painelespaco");
         }
 
         setLoading(true);
@@ -94,13 +94,13 @@ export default function Espacos() {
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownFiltro" style={{ textAlign: "center", width: "200px" }}>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("localização")}>Térreo</button>
+                                    <button className="dropdown-item" onClick={() => setFiltro("Térreo")}>Térreo</button>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("localização")}>2ª Andar</button>
+                                    <button className="dropdown-item" onClick={() => setFiltro("2ª Andar")}>2ª Andar</button>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("localização")}>3ª Andar</button>
+                                    <button className="dropdown-item" onClick={() => setFiltro("3ª Andar")}>3ª Andar</button>
                                 </li>
                                 <li>
                                     <button className="dropdown-item" onClick={() => setFiltro("")}>Todos</button>
@@ -110,7 +110,7 @@ export default function Espacos() {
                         <button
                             type="button"
                             className="btn btn-success"
-                            onClick={() => navigate("/espacos/criar")}
+                            onClick={() => navigate("/painelespaco/criar")}
                             style={{
                                 padding: "10px 20px",
                                 fontSize: "17px",
@@ -133,7 +133,7 @@ export default function Espacos() {
                 >
                     <div className="row">
                         {espacosFiltrados.map((espaco) => (
-                            <div className="col-12 col-md-4 mb-4" key={espaco.id}>
+                            <div className="col-12 col-sm-6 col-md-4 mb-4" key={espaco.id}>
                                 <div
                                     className="mb-3 p-3 border rounded"
                                     style={{
@@ -186,7 +186,7 @@ export default function Espacos() {
                                                 <li>
                                                     <button
                                                         className="dropdown-item"
-                                                        onClick={() => navigate(`/espacos/${espaco.id}`)}
+                                                        onClick={() => navigate(`/painelespaco/${espaco.id}`)}
                                                     >
                                                         Editar
                                                     </button>
