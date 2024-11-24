@@ -48,20 +48,16 @@
         "Projetor"
       ],
       "id": 2
-    },
+    }
+  ],
+  "reservas": [
     {
-      "nome": "Sala 20",
-      "capacidade": "40",
-      "localizado": "3ª Andar",
-      "disponibilidadeInicio": "19:00 PM",
-      "disponibilidadeFim": "22:25 PM",
-      "recursosInstalados": [
-        "Microfone",
-        "Lousa",
-        "Computador",
-        "Projetor"
-      ],
-      "id": 3
+      "id": 1,
+      "espacoId": 1,
+      "nome": "Wellington Joaquim",
+      "dataReserva": "2024-12-01",
+      "horarioInicio": "19:00 PM",
+      "horarioFim": "22:25 PM"
     }
   ]
 }
