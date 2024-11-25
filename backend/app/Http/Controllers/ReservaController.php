@@ -41,8 +41,7 @@ class ReservaController extends Controller
         try {
             $dados = $this->validateRequest($request);
 
-            // Create a new Reserva using the validated data
-            $reserva = Reserva::create($dados);
+            $reserva = Espaco::create($dados);
 
             return response()->json([
                 'message' => 'Reserva criada com sucesso!',
@@ -143,33 +142,33 @@ class ReservaController extends Controller
     }
 
     private function validateRequest(Request $request)
-{
-    return $request->validate([
-        'usuario_id' => 'required|exists:users,id', // Verifica se o ID existe na tabela 'users'
-        'espaco_id' => 'required|exists:espacos,id', // Verifica se o ID existe na tabela 'espacos'
-        'nome' => 'required|string|max:255', // Validação para o campo 'nome'
-        'horario_inicio' => 'required|string',
-        'horario_fim' => 'required|string',
-        'data' => 'required|date',
-        'status' => 'required|string|max:255',
-    ], [
-        'usuario_id.required' => 'O campo usuário é obrigatório.',
-        'usuario_id.exists' => 'O usuário selecionado não existe.',
-        'espaco_id.required' => 'O campo espaço é obrigatório.',
-        'espaco_id.exists' => 'O espaço selecionado não existe.',
-        'nome.required' => 'O campo nome é obrigatório.', // Mensagem de erro personalizada
-        'nome.string' => 'O campo nome deve ser uma string válida.', // Mensagem para erro de tipo
-        'nome.max' => 'O campo nome pode ter no máximo 255 caracteres.', // Mensagem de erro para comprimento
-        'horario_inicio.required' => 'O campo horário de início é obrigatório.',
-        'horario_inicio.string' => 'O horário de início deve ser um texto válido.',
-        'horario_fim.required' => 'O campo horário de término é obrigatório.',
-        'horario_fim.string' => 'O horário de término deve ser um texto válido.',
-        'data.required' => 'O campo data é obrigatório.',
-        'data.date' => 'A data deve estar no formato válido (AAAA-MM-DD).',
-        'status.required' => 'O campo status é obrigatório.',
-        'status.string' => 'O status deve ser um texto válido.',
-        'status.max' => 'O status pode ter no máximo 255 caracteres.',
-    ]);
-}
+    {
+        return $request->validate([
+            'usuario_id' => 'required|exists:users,id',
+            'espaco_id' => 'required|exists:espacos,id',
+            'nome' => 'required|string|max:255',
+            'horario_inicio' => 'required|string',
+            'horario_fim' => 'required|string',
+            'data' => 'required|date',
+            'status' => 'required|string|max:255',
+        ], [
+            'usuario_id.required' => 'O campo usuário é obrigatório.',
+            'usuario_id.exists' => 'O usuário selecionado não existe.',
+            'espaco_id.required' => 'O campo espaço é obrigatório.',
+            'espaco_id.exists' => 'O espaço selecionado não existe.',
+            'nome.required' => 'O campo nome é obrigatório.',
+            'nome.string' => 'O campo nome deve ser uma string válida.',
+            'nome.max' => 'O campo nome pode ter no máximo 255 caracteres.',
+            'horario_inicio.required' => 'O campo horário de início é obrigatório.',
+            'horario_inicio.string' => 'O horário de início deve ser um texto válido.',
+            'horario_fim.required' => 'O campo horário de término é obrigatório.',
+            'horario_fim.string' => 'O horário de término deve ser um texto válido.',
+            'data.required' => 'O campo data é obrigatório.',
+            'data.date' => 'A data deve estar no formato válido (AAAA-MM-DD).',
+            'status.required' => 'O campo status é obrigatório.',
+            'status.string' => 'O status deve ser um texto válido.',
+            'status.max' => 'O status pode ter no máximo 255 caracteres.',
+        ]);
+    }
 
-}
+    }
