@@ -2,7 +2,7 @@ export interface IToken {
     accessToken: string
     user: {
         id: number
-        nome: string
+        name: string
         email: string
         papel: string
     }

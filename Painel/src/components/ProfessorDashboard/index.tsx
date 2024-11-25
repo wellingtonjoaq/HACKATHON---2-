@@ -120,7 +120,9 @@ export const ProfessorDashboard = (props: IProps) => {
                         <div className="position-sticky pt-3">
                             <ul className="nav flex-column text-dark">
                                 <li className="nav-item py-2">
-                                    <Link className="nav-link d-flex align-items-center text-dark" to="/notificacao">
+                                    <Link 
+                                        className="nav-link d-flex align-items-center text-dark" 
+                                        to="/cronograma">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" className="bi bi-house-door me-2" viewBox="0 0 16 16">
                                             <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z" />
                                         </svg>
@@ -128,7 +130,9 @@ export const ProfessorDashboard = (props: IProps) => {
                                     </Link>
                                 </li>
                                 <li className="nav-item py-2">
-                                    <Link className="nav-link d-flex align-items-center text-dark" to="/quadrodereserva">
+                                    <Link 
+                                        className="nav-link d-flex align-items-center text-dark" 
+                                        to="/quadrodereserva">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" className="bi bi-border-all me-2" viewBox="0 0 16 16">
                                             <path d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z" />
                                         </svg>
@@ -138,7 +142,7 @@ export const ProfessorDashboard = (props: IProps) => {
                                 <li className="nav-item py-2">
                                     <Link
                                         className="nav-link d-flex align-items-center text-dark"
-                                        to={'/dashboard'}
+                                        to={'/quadrodereserva'}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-calendar2-date me-2" viewBox="0 0 16 16">
                                             <path d="M6.445 12.688V7.354h-.633A13 13 0 0 0 4.5 8.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23" />

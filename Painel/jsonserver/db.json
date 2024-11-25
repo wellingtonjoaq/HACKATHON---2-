@@ -66,44 +66,51 @@
   ],
   "reservas": [
     {
-      "id": 1,
-      "espaco_id": 1,
-      "usuario_id": 1,
-      "nome": "João Silva",
-      "data": "2024-12-01",
-      "horario_inicio": "14:00",
-      "horario_fim": "15:00",
-      "status": "ativa"
-    },
-    {
-      "nome": "SAMUEL ALVES DE SANTANA JUNIOR",
       "espaco_id": 1,
       "usuario_id": 2,
-      "data": "1222-12-12",
+      "data": "2024-11-27",
+      "horario_inicio": "19:00",
+      "horario_fim": "20:40",
+      "status": "ativa",
+      "id": 1
+    },
+    {
+      "espaco_id": 2,
+      "usuario_id": 2,
+      "data": "2024-11-25",
       "horario_inicio": "19:00",
       "horario_fim": "22:00",
       "status": "ativa",
       "id": 2
     },
     {
-      "nome": "",
       "espaco_id": 1,
-      "usuario_id": 2,
-      "data": "2024-11-26",
-      "horario_inicio": "19:00",
-      "horario_fim": "22:00",
-      "status": "ativa",
-      "id": 3
-    },
-    {
-      "nome": "",
-      "espaco_id": 3,
-      "usuario_id": 2,
-      "data": "2024-11-25",
-      "horario_inicio": "19:00",
+      "usuario_id": 3,
+      "data": "2024-10-31",
+      "horario_inicio": "21:00",
       "horario_fim": "22:00",
       "status": "ativa",
       "id": 4
+    },
+    {
+      "espaco_id": 2,
+      "usuario_id": 2,
+      "data": "2024-11-26",
+      "horario_inicio": "21:00",
+      "horario_fim": "20:40",
+      "status": "ativa",
+      "id": 6
+    }
+  ],
+  "historico": [
+    {
+      "id": 1,
+      "espaco_id": 1,
+      "usuario_id": 1,
+      "data": "2024-12-01",
+      "horario_inicio": "14:00",
+      "horario_fim": "15:00",
+      "status": "Cancelada"
     }
   ]
 }

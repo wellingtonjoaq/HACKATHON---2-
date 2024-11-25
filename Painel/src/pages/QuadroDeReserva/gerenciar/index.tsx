@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loading } from "../../../components/Loading";
-import { LayoutDashboard } from "../../../components/AdminDashboard";
 import { IToken } from "../../../interfaces/token";
 import { validaPermissao, verificaTokenExpirado } from "../../../services/token";
+import { ProfessorDashboard } from "../../../components/ProfessorDashboard";
 
 interface IReserva {
     espaco_id: number;
@@ -20,18 +20,10 @@ interface IEspacos {
     nome: string;
 }
 
-interface IUsuarios {
-    id: number;
-    name: string;
-    email: string;
-    papel: string;
-}
-
-export default function AdicionarReserva() {
+export default function ReservaEspaco() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [dadosEspacos, setDadosEspacos] = useState<Array<IEspacos>>([]);
-    const [dadosUsuarios, setDadosUsuarios] = useState<Array<IUsuarios>>([]);
     const [formData, setFormData] = useState<IReserva>({
         espaco_id: 0,
         usuario_id: 0,
@@ -40,6 +32,7 @@ export default function AdicionarReserva() {
         horario_fim: "",
         status: "ativa",
     });
+    const [nomeUsuarioLogado, setNomeUsuarioLogado] = useState<string>("");
 
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
@@ -52,7 +45,7 @@ export default function AdicionarReserva() {
         }
 
         if (!token || verificaTokenExpirado(token.accessToken)) {
-            navigate("/"); 
+            navigate("/");
         }
 
         if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
@@ -61,25 +54,29 @@ export default function AdicionarReserva() {
 
         setLoading(true);
 
+        // Define o ID e o nome do usuário logado no estado
+        if (token) {
+            setFormData((prev) => ({
+                ...prev,
+                usuario_id: token.user.id,
+            }));
+            setNomeUsuarioLogado(token.user.name);
+        }
+
         axios
             .get("http://localhost:3001/espaco")
             .then((response) => setDadosEspacos(response.data))
-            .catch((err) => console.error("Erro ao buscar espaços", err));
-
-        axios
-            .get("http://localhost:3001/users")
-            .then((response) => setDadosUsuarios(response.data))
-            .catch((err) => console.error("Erro ao buscar usuários", err))
+            .catch((err) => console.error("Erro ao buscar espaços", err))
             .finally(() => setLoading(false));
     }, [navigate]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
-        if (name === "espaco_id" || name === "usuario_id") {
+        if (name === "espaco_id") {
             setFormData((prev) => ({
                 ...prev,
-                [name]: Number(value), 
+                [name]: Number(value),
             }));
         } else {
             setFormData((prev) => ({
@@ -97,7 +94,7 @@ export default function AdicionarReserva() {
             .post("http://localhost:3001/reservas", formData)
             .then(() => {
                 alert("Reserva adicionada com sucesso!");
-                navigate("/reserva");
+                navigate("/quadrodereserva");
             })
             .catch((err) => {
                 console.error("Erro ao adicionar reserva", err);
@@ -109,7 +106,7 @@ export default function AdicionarReserva() {
     return (
         <>
             <Loading visible={loading} />
-            <LayoutDashboard>
+            <ProfessorDashboard>
                 <div
                     className="p-4 rounded border border-dark"
                     style={{
@@ -123,22 +120,10 @@ export default function AdicionarReserva() {
                         <div className="row">
                             <div className="col-12 mb-4">
                                 <div className="form-group">
-                                    <label htmlFor="usuario_id">Usuário</label>
-                                    <select
-                                        id="usuario_id"
-                                        name="usuario_id"
-                                        className="form-select"
-                                        value={formData.usuario_id}
-                                        onChange={handleInputChange}
-                                        required
-                                    >
-                                        <option value="">Selecione um usuário</option>
-                                        {dadosUsuarios.map((usuario) => (
-                                            <option key={usuario.id} value={usuario.id}>
-                                                {usuario.name} ({usuario.papel})
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <label>Usuário</label>
+                                    <p className="form-control" style={{ backgroundColor: "#e9ecef", cursor: "not-allowed" }}>
+                                        {nomeUsuarioLogado}
+                                    </p>
                                 </div>
                             </div>
 
@@ -230,9 +215,7 @@ export default function AdicionarReserva() {
                         </div>
                     </form>
                 </div>
-            </LayoutDashboard>
+            </ProfessorDashboard>
         </>
-
-    
     );
 }

@@ -12,6 +12,9 @@ import QuandoDeReserva from './pages/QuadroDeReserva'
 import Reservas from './pages/Reserva'
 import GerenciarReserva from './pages/Reserva/Gerenciar'
 import AdicionarEspaco from './pages/PainelEspaco/gerenciar'
+import Historico from './pages/HistoricoReserva'
+import ReservaEspaco from './pages/QuadroDeReserva/gerenciar'
+import MeuCronograma from './pages/Notificacao'
 export const Rotas = () => {
     
     return(
@@ -44,16 +47,28 @@ export const Rotas = () => {
                     element={<Reservas />}
                 />
                 <Route 
-                    path="/reserva/:id" 
+                    path='/reserva/:id' 
                     element={<GerenciarReserva />} 
                 />
                 <Route
-                    path='/notificacao'
+                    path='/historico'
+                    element={<Historico />}
+                />
+                <Route
+                    path='/cronograma'
+                    element={<MeuCronograma/>}
+                />
+                <Route
+                    path='/cronograma/:id'
                     element={<Notificacao/>}
                 />
-                                <Route
+                <Route
                     path='/quadrodereserva'
                     element={<QuandoDeReserva/>}
+                />
+                <Route
+                    path='/quadrodereserva/:id'
+                    element={<ReservaEspaco/>}
                 />
             </Routes>
         </BrowserRouter>

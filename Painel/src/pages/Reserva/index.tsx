@@ -11,7 +11,6 @@ interface IReserva {
     id: number;
     espaco_id: number;
     usuario_id: number;
-    nome: string;
     data: string;
     horario_inicio: string;
     horario_fim: string;
@@ -99,6 +98,37 @@ export default function Reservas() {
               return espaco && espaco.localidade === filtro;
           })
         : dadosReservas;
+    
+        const cancelarReserva = (id: number) => {
+            const reserva = dadosReservas.find(r => r.id === id);
+            if (reserva) {
+                const confirmCancel = window.confirm("Tem certeza que deseja cancelar a reserva?");
+                if (confirmCancel) {
+                    // Adicionar a reserva ao histórico
+                    axios.post("http://localhost:3001/historico", reserva)
+                        .then(() => {
+                            // Remover a reserva das reservas ativas
+                            axios.delete(`http://localhost:3001/reservas/${id}`)
+                                .then(() => {
+                                    setDadosReservas((prevState) =>
+                                        prevState.filter((r) => r.id !== id) // Atualiza o estado local
+                                    );
+                                })
+                                .catch((err) => {
+                                    console.error("Erro ao cancelar reserva", err);
+                                    alert("Erro ao cancelar a reserva.");
+                                });
+                        })
+                        .catch((err) => {
+                            console.error("Erro ao adicionar no histórico", err);
+                            alert("Erro ao salvar no histórico.");
+                        });
+                }
+            }
+        };
+        
+        
+          
 
     return (
         <>
@@ -228,7 +258,7 @@ export default function Reservas() {
                                                 <li>
                                                     <button
                                                         className="dropdown-item text-danger"
-                                                        onClick={() => console.log(`Cancelar reserva ${reserva.id}`)}
+                                                        onClick={() => cancelarReserva(reserva.id)}
                                                     >
                                                         Cancelar Reserva
                                                     </button>
