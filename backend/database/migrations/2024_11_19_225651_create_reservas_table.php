@@ -13,22 +13,26 @@ return new class extends Migration
     {
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('usuario_id'); // Coluna da chave estrangeira
 
-            // Definindo a chave estrangeira
-            $table->foreign('usuario_id') // Nome da coluna que será chave estrangeira
-                  ->references('id') // Coluna referenciada na tabela 'usuarios'
+            // Coluna da chave estrangeira para 'usuario_id', permitindo valores nulos
+            $table->unsignedBigInteger('usuario_id')->nullable();
+
+            // Definindo a chave estrangeira para 'usuario_id'
+            $table->foreign('usuario_id')
+                  ->references('id') // Coluna referenciada na tabela 'users'
                   ->on('users') // Nome da tabela referenciada
-                  ->onDelete('cascade'); // Ação ao excluir o registro na tabela 'usuarios'
+                  ->onDelete('cascade'); // Ação ao excluir o registro na tabela 'users'
 
-            $table->unsignedBigInteger('ambiente_id'); // Coluna da chave estrangeira
+            // Coluna da chave estrangeira para 'espaco_id', permitindo valores nulos
+            $table->unsignedBigInteger('espaco_id')->nullable();
 
-                  // Definindo a chave estrangeira
-                  $table->foreign('ambiente_id') // Nome da coluna que será chave estrangeira
-                        ->references('id') // Coluna referenciada na tabela 'ambientes'
-                        ->on('ambientes') // Nome da tabela referenciada
-                        ->onDelete('cascade'); // Ação ao excluir o registro na tabela 'ambientes'
+            // Definindo a chave estrangeira para 'espaco_id'
+            $table->foreign('espaco_id')
+                  ->references('id') // Coluna referenciada na tabela 'espacos'
+                  ->on('espacos') // Nome da tabela referenciada
+                  ->onDelete('cascade'); // Ação ao excluir o registro na tabela 'espacos'
 
+            $table->string('nome');
             $table->string('horario_inicio');
             $table->string('horario_fim');
             $table->date('data');
@@ -36,6 +40,7 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
     }
 
     /**

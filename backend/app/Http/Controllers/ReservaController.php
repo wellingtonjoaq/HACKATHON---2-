@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Espaco;
 use App\Models\Reserva;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReservaController extends Controller
@@ -12,10 +14,9 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        $reservas = Reserva::with(['usuario', 'ambiente'])->get();
+        $reservas = Reserva::with(['usuario:id,name', 'espaco:id,nome'])->get();
 
         return response()->json($reservas);
-
     }
 
     /**
@@ -23,7 +24,13 @@ class ReservaController extends Controller
      */
     public function create()
     {
-        return view('reservas.create');
+        $usuarios = User::all();
+        $espacos = Espaco::all();
+
+        return response()->json([
+            'usuarios' => $usuarios,
+            'espacos' => $espacos
+        ]);
     }
 
     /**
@@ -31,24 +38,29 @@ class ReservaController extends Controller
      */
     public function store(Request $request)
     {
-        $dados = $request->validate([
-            'usuario_id' => 'required|exists:users,id', // Verifica se o ID existe na tabela 'users'
-            'ambiente_id' => 'required|exists:ambientes,id', // Verifica se o ID existe na tabela 'ambientes'
-            'horario_inicio' => 'required|string',
-            'horario_fim' => 'required|date|string',
-            'status' => 'required|string|max:255',
-        ]);
-
         try {
-            $reserva = Reserva::create($dados);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erro ao registra reserva. Por favor, tente novamente.'], 500);
-        }
+            $dados = $this->validateRequest($request);
 
-        return response()->json([
-            'message' => 'Reserva realizada com sucesso!',
-            'reserva' => $reserva
-        ], 201);
+            // Create a new Reserva using the validated data
+            $reserva = Reserva::create($dados);
+
+            return response()->json([
+                'message' => 'Reserva criada com sucesso!',
+                'reserva' => $reserva
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $e->errors(),
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao salvar a reserva. Por favor, tente novamente.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -56,7 +68,7 @@ class ReservaController extends Controller
      */
     public function show(string $id)
     {
-        $reserva = Reserva::with(['usuario', 'ambiente'])->find($id);
+        $reserva = Reserva::with(['usuario', 'espaco'])->find($id);
 
         if (!$reserva) {
             return response()->json(['mensagem' => 'Reserva não encontrada.'], 404);
@@ -70,7 +82,7 @@ class ReservaController extends Controller
      */
     public function edit(string $id)
     {
-        $reserva = Reserva::with(['usuario', 'ambiente'])->find($id);
+        $reserva = Reserva::with(['usuario:id,name', 'espaco:id,nome'])->find($id);
 
         if (!$reserva) {
             return response()->json(['mensagem' => 'Reserva não encontrada.'], 404);
@@ -86,24 +98,32 @@ class ReservaController extends Controller
     {
         $reserva = Reserva::find($id);
 
-        $dados = $request->validate([
-            'usuario_id' => 'required|exists:users,id',
-            'ambiente_id' => 'required|exists:ambientes,id',
-            'horario_inicio' => 'required|date|before:horario_fim',
-            'horario_fim' => 'required|date|after:horario_inicio',
-            'status' => 'required|string|max:255',
-        ]);
-
-        try {
-            $reserva->update($dados);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Erro ao registra reserva. Por favor, tente novamente.'], 500);
+        if (!$reserva) {
+            return response()->json(['mensagem' => 'Reserva não encontrada.'], 404);
         }
 
-        return response()->json([
-            'message' => 'Reserva realizada com sucesso!',
-            'reserva' => $reserva
-        ], 201);
+        try {
+            $dados = $this->validateRequest($request);
+
+            $reserva->update($dados);
+
+            return response()->json([
+                'message' => 'Reserva atualizada com sucesso!',
+                'reserva' => $reserva
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Erro de validação',
+                'errors' => $e->errors(),
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao atualizar a reserva. Por favor, tente novamente.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -113,12 +133,43 @@ class ReservaController extends Controller
     {
         $reserva = Reserva::find($id);
 
-    if (!$reserva) {
-        return response()->json(['mensagem' => 'Reserva não encontrada.'], 404);
+        if (!$reserva) {
+            return response()->json(['mensagem' => 'Reserva não encontrada.'], 404);
+        }
+
+        $reserva->delete();
+
+        return response()->json(['mensagem' => 'Reserva excluída com sucesso!']);
     }
 
-    $reserva->delete();
+    private function validateRequest(Request $request)
+{
+    return $request->validate([
+        'usuario_id' => 'required|exists:users,id', // Verifica se o ID existe na tabela 'users'
+        'espaco_id' => 'required|exists:espacos,id', // Verifica se o ID existe na tabela 'espacos'
+        'nome' => 'required|string|max:255', // Validação para o campo 'nome'
+        'horario_inicio' => 'required|string',
+        'horario_fim' => 'required|string',
+        'data' => 'required|date',
+        'status' => 'required|string|max:255',
+    ], [
+        'usuario_id.required' => 'O campo usuário é obrigatório.',
+        'usuario_id.exists' => 'O usuário selecionado não existe.',
+        'espaco_id.required' => 'O campo espaço é obrigatório.',
+        'espaco_id.exists' => 'O espaço selecionado não existe.',
+        'nome.required' => 'O campo nome é obrigatório.', // Mensagem de erro personalizada
+        'nome.string' => 'O campo nome deve ser uma string válida.', // Mensagem para erro de tipo
+        'nome.max' => 'O campo nome pode ter no máximo 255 caracteres.', // Mensagem de erro para comprimento
+        'horario_inicio.required' => 'O campo horário de início é obrigatório.',
+        'horario_inicio.string' => 'O horário de início deve ser um texto válido.',
+        'horario_fim.required' => 'O campo horário de término é obrigatório.',
+        'horario_fim.string' => 'O horário de término deve ser um texto válido.',
+        'data.required' => 'O campo data é obrigatório.',
+        'data.date' => 'A data deve estar no formato válido (AAAA-MM-DD).',
+        'status.required' => 'O campo status é obrigatório.',
+        'status.string' => 'O status deve ser um texto válido.',
+        'status.max' => 'O status pode ter no máximo 255 caracteres.',
+    ]);
+}
 
-    return response()->json(['mensagem' => 'Reserva excluída com sucesso!']);
-    }
 }

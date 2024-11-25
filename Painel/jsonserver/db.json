@@ -1,31 +1,108 @@
 {
   "users": [
     {
-      "nome": "Admin",
+      "name": "Admin",
       "email": "admin@gmail.com",
-      "permissoes": "admin",
+      "papel": "admin",
       "password": "$2a$10$Q8RG0nOaQSy3wCuphnZf0uC4XRtAL4PpaoZlEvlTACqZQKMuIHvJS",
       "id": 1
     },
     {
-      "email": "yuri@gmail.com",
-      "password": "$2a$10$bx/TzDM.mrRiqFaSP6UxIedNuQj8P7bzIBxRs5MKVcOjv/25UGOz2",
-      "nome": "Yuri Alberto",
-      "permissoes": "admin",
+      "email": "wellington@gmail.com",
+      "password": "$2a$10$55lpeF61zlTdfcdnHZ.h5eN.oiYR.lvWnQjtc3MvianDI0mxfmosa",
+      "name": "Wellington",
+      "papel": "professor",
       "id": 2
     },
     {
-      "nome": "Yamal",
-      "email": "lamine@gmail.com",
-      "permissoes": "admin",
-      "password": "$2a$10$eC/EUOWCjj1GACTpZAn2ZuAtjJBVCFiQjxuGpau5Zq.uB0mPobptS",
+      "email": "julio@gmail.com",
+      "password": "$2a$10$fEi0pECqE2u0LVdbY80fJuRNQlV5ftZcFyr8Wmqfm25fHfRNmmjW.",
+      "name": "Julio",
+      "papel": "admin",
+      "id": 3
+    }
+  ],
+  "espaco": [
+    {
+      "nome": "Auditório",
+      "capacidade": "255",
+      "localidade": "Térreo",
+      "disponibilidadeInicio": "19:00 PM",
+      "disponibilidadeFim": "22:25 PM",
+      "recursosInstalados": [
+        "Microfone",
+        "Lousa",
+        "Computador",
+        "Projetor"
+      ],
+      "id": 1
+    },
+    {
+      "nome": "Sala 15",
+      "capacidade": "40",
+      "localidade": "2ª Andar",
+      "disponibilidadeInicio": "20:55 PM",
+      "disponibilidadeFim": "22:25 PM",
+      "recursosInstalados": [
+        "Lousa",
+        "Projetor"
+      ],
+      "id": 2
+    },
+    {
+      "nome": "Sala 20",
+      "capacidade": "40",
+      "localidade": "3ª Andar",
+      "disponibilidadeInicio": "19:00 PM",
+      "disponibilidadeFim": "22:25 PM",
+      "recursosInstalados": [
+        "Microfone",
+        "Lousa",
+        "Computador",
+        "Projetor"
+      ],
+      "id": 3
+    }
+  ],
+  "reservas": [
+    {
+      "id": 1,
+      "espaco_id": 1,
+      "usuario_id": 1,
+      "nome": "João Silva",
+      "data": "2024-12-01",
+      "horario_inicio": "14:00",
+      "horario_fim": "15:00",
+      "status": "ativa"
+    },
+    {
+      "nome": "SAMUEL ALVES DE SANTANA JUNIOR",
+      "espaco_id": 1,
+      "usuario_id": 2,
+      "data": "1222-12-12",
+      "horario_inicio": "19:00",
+      "horario_fim": "22:00",
+      "status": "ativa",
+      "id": 2
+    },
+    {
+      "nome": "",
+      "espaco_id": 1,
+      "usuario_id": 2,
+      "data": "2024-11-26",
+      "horario_inicio": "19:00",
+      "horario_fim": "22:00",
+      "status": "ativa",
       "id": 3
     },
     {
-      "nome": "Wellington",
-      "email": "wellington@gmail.com",
-      "permissoes": "professor",
-      "password": "$2a$10$NBuqwqNmkD14zb7CV3vOyOlx0ZufFFYCnHgfsY4Vef0YeAC0EwG2.",
+      "nome": "",
+      "espaco_id": 3,
+      "usuario_id": 2,
+      "data": "2024-11-25",
+      "horario_inicio": "19:00",
+      "horario_fim": "22:00",
+      "status": "ativa",
       "id": 4
     }
   ]
