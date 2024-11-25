@@ -13,6 +13,7 @@ export default function Login() {
 
     const [loading, setLoading] = useState(false)
     const [toast, setToast] = useState(false)
+    const [papel, setPapel] = useState<string>('');
 
     const submitForm = useCallback((event: SyntheticEvent) => {
 
@@ -27,7 +28,6 @@ export default function Login() {
                 senha: { value: string }
             }
 
-
             axios.post('http://localhost:8000/api/login',
                 {
                     email: target.email.value,
@@ -35,29 +35,33 @@ export default function Login() {
                 }
             ).then((resposta) => {
 
-                console.log('deu bao')
-                console.log(resposta.data)
+                console.log('Login bem-sucedido');
+                console.log(resposta.data);
 
                 localStorage.setItem(
                     'painel.token',
                     JSON.stringify(resposta.data)
                 )
-               
-                navigate('/usuarios')
 
+                // Redirecionamento baseado no papel selecionado
+                if (papel === 'admin') {
+                    navigate('/usuarios');
+                } else if (papel === 'professor') {
+                    navigate('/notificacao');
+                }
 
             }).catch((erro) => {
-                console.log('deu ruim')
-                console.log(erro)
-                setLoading(false)
-                setToast(true)
+                console.log('Erro no login');
+                console.log(erro);
+                setLoading(false);
+                setToast(true);
             })
 
         } else {
-            refForm.current.classList.add('was-validated')
+            refForm.current.classList.add('was-validated');
         }
 
-    }, [])
+    }, [papel]);
 
     return (
         <>
@@ -138,6 +142,31 @@ export default function Login() {
                                 className='invalid-feedback'
                             >
                                 Senha
+                            </div>
+                        </div>
+
+                        <div className='col-md-12 mt-1'>
+                            <label
+                                htmlFor='papel'
+                                className='form-label'
+                            >
+                                Papel
+                            </label>
+                            <select
+                                className='form-select'
+                                id='papel'
+                                required
+                                value={papel}
+                                onChange={(e) => setPapel(e.target.value)}
+                            >
+                                <option value=''>Escolha o papel</option>
+                                <option value='admin'>Admin</option>
+                                <option value='professor'>Professor</option>
+                            </select>
+                            <div
+                                className='invalid-feedback'
+                            >
+                                Selecione um papel
                             </div>
                         </div>
 
