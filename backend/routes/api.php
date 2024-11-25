@@ -37,7 +37,7 @@ Route::prefix('espacos')->group(function () {
     Route::delete('{id}', [EspacoController::class, 'destroy']);
 });
 
-Route::prefix('reserva')->group(function () {
+Route::prefix('reservas')->group(function () {
     Route::get('/', [ReservaController::class, 'index']);
     Route::get('create', [ReservaController::class, 'create']);
     Route::get('{id}', [ReservaController::class, 'show']);

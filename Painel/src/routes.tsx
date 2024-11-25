@@ -7,11 +7,11 @@ import Login from './pages/Login'
 import Usuarios from './pages/Usuarios'
 import GerenciarUsuarios from './pages/Usuarios/Gerenciar'
 import PainelEspaco from './pages/PainelEspaco'
-import AdicionarEspaco from './pages/PainelEspaco/gerenciar'
-import Reservas from './pages/GerenciarReserva'
-import AdicionarReserva from './pages/GerenciarReserva/Gerenciar'
 import Notificacao from './pages/Notificacao'
 import QuandoDeReserva from './pages/QuadroDeReserva'
+import Reservas from './pages/Reserva'
+import GerenciarReserva from './pages/Reserva/Gerenciar'
+import AdicionarEspaco from './pages/PainelEspaco/gerenciar'
 export const Rotas = () => {
     
     return(
@@ -45,7 +45,7 @@ export const Rotas = () => {
                 />
                 <Route 
                     path="/reserva/:id" 
-                    element={<AdicionarReserva />} 
+                    element={<GerenciarReserva />} 
                 />
                 <Route
                     path='/notificacao'

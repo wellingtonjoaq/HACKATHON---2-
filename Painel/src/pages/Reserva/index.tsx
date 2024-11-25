@@ -5,6 +5,18 @@ import { IToken } from "../../interfaces/token";
 import { validaPermissao, verificaTokenExpirado } from "../../services/token";
 import { Loading } from "../../components/Loading";
 import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css"; 
+
+interface IReserva {
+    id: number;
+    espaco_id: number;
+    usuario_id: number;
+    nome: string;
+    data: string;
+    horario_inicio: string;
+    horario_fim: string;
+    status: string;
+}
 
 interface IEspacos {
     id: number;
@@ -13,34 +25,25 @@ interface IEspacos {
     localidade: string;
 }
 
-export default function Espacos() {
+interface IUsuarios {
+    id: number;
+    name: string;
+    email: string;
+    papel: string;
+}
+
+export default function Reservas() {
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [dadosEspacos, setDadosEspacos] = useState<Array<IEspacos>>([]);
+    const [dadosReservas, setDadosReservas] = useState<Array<IReserva>>([]);
+    const [dadosUsuarios, setDadosUsuarios] = useState<Array<IUsuarios>>([]);
+
     const [filtro, setFiltro] = useState<string>("");
-
-    const espacosFiltrados = dadosEspacos.filter((espaco) => {
-        if (!filtro) return true; 
-        return espaco.localidade.toLowerCase().includes(filtro.toLowerCase());
-    });    
-
-    const excluirEspaco = (id: number) => {
-        if (window.confirm("Você tem certeza que deseja excluir este espaço?")) {
-            axios
-                .delete(`http://localhost:8000/api/espacos/${id}`)
-                .then(() => {
-                    setDadosEspacos(dadosEspacos.filter((espaco) => espaco.id !== id));
-                })
-                .catch((err) => {
-                    console.error("Erro ao excluir espaço", err);
-                });
-        }
-    };
 
     useEffect(() => {
         let lsStorage = localStorage.getItem("painel.token");
-
         let token: IToken | null = null;
 
         if (typeof lsStorage === "string") {
@@ -51,21 +54,51 @@ export default function Espacos() {
             navigate("/");
         }
 
-        if (!validaPermissao(["admin"], token?.user.papel)) {
-            navigate("/");
+        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
+            navigate("/reserva");
         }
 
-        axios
-            .get('http://localhost:8000/api/espacos')
-            .then((res) => {
-                setDadosEspacos(res.data);
-                setLoading(false);
+        setLoading(true);
+
+        axios.get("http://localhost:3001/reservas/")
+            .then((response) => {
+                console.log(response.data)
+                setDadosReservas(response.data);
             })
-            .catch((err) => {
-                setLoading(false);
-                console.error(err);
-            });
+            .catch((err) => console.error("Erro ao buscar reserva", err));
+
+        axios.get("http://localhost:3001/espacos/")
+            .then((response) => {
+                console.log(response.data)
+                setDadosEspacos(response.data);
+            })
+            .catch((err) => console.error("Erro ao buscar espaços", err));
+
+        axios.get("http://localhost:3001/user/")
+            .then((response) => {
+                console.log(response.data)
+                setDadosUsuarios(response.data);
+            })
+            .catch((err) => console.error("Erro ao buscar usuario", err))
+            .finally(() => setLoading(false));
     }, [navigate]);
+
+    const getEspacoNome = (espaco_id: number) => {
+        const espaco = dadosEspacos.find((e) => e.id === espaco_id);
+        return espaco ? espaco.nome : "Espaço não encontrado";
+    };
+
+    const getUsuarioEmail = (usuario_id: number) => {
+        const usuario = dadosUsuarios.find((u) => u.id === usuario_id);
+        return usuario ? usuario.email : "Usuário não encontrado";
+    };
+
+    const reservasFiltradas = filtro
+        ? dadosReservas.filter((reserva) => {
+              const espaco = dadosEspacos.find((e) => e.id === reserva.espaco_id);
+              return espaco && espaco.localidade === filtro;
+          })
+        : dadosReservas;
 
     return (
         <>
@@ -73,7 +106,7 @@ export default function Espacos() {
             <LayoutDashboard>
                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-center p-3 bg-light border">
                     <div className="d-flex flex-column align-items-center mb-3 mb-md-0">
-                        <h1 className="h2 mt-2">Painel Espaço</h1>
+                        <h1 className="h2 mt-2">Gerenciar Reservas</h1>
                     </div>
 
                     <div className="d-flex flex-column flex-md-row align-items-center ms-auto">
@@ -110,18 +143,17 @@ export default function Espacos() {
                         <button
                             type="button"
                             className="btn btn-success"
-                            onClick={() => navigate("/painelespaco/criar")}
+                            onClick={() => navigate("/reserva/criar")}
                             style={{
                                 padding: "10px 20px",
                                 fontSize: "17px",
                                 borderRadius: "5px",
                             }}
                         >
-                            Adicionar Espaço
+                            Reservar
                         </button>
                     </div>
                 </div>
-
                 <div
                     style={{
                         padding: "30px",
@@ -132,37 +164,39 @@ export default function Espacos() {
                     }}
                 >
                     <div className="row">
-                        {espacosFiltrados.map((espaco) => (
-                            <div className="col-12 col-sm-6 col-md-4 mb-4" key={espaco.id}>
+                        {reservasFiltradas.map((reserva) => (
+                            <div className="col-12 col-sm-6 col-md-4 mb-4" key={reserva.id}>
                                 <div
                                     className="mb-3 p-3 border rounded"
                                     style={{
                                         display: "flex",
-                                        flexDirection: "column", 
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
                                         backgroundColor: "white",
+                                        height: "100%", 
                                     }}
                                 >
                                     <div
                                         style={{
                                             display: "flex",
                                             justifyContent: "space-between",
-                                            alignItems: "center", 
+                                            alignItems: "center",
                                             border: "1px solid black",
                                             padding: "10px",
                                         }}
                                     >
                                         <div
                                             style={{
-                                                marginTop: "10px"
+                                                marginTop: "10px",
                                             }}
                                         >
-                                            <h5>{espaco.nome}</h5>
+                                            <h5>{getUsuarioEmail(reserva.usuario_id)} #{reserva.id}</h5>
                                         </div>
                                         <div className="dropdown">
                                             <button
                                                 className="btn btn-secondary dropdown-toggle"
                                                 type="button"
-                                                id={`dropdown-${espaco.id}`}
+                                                id={`dropdown-${reserva.id}`}
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false"
                                                 style={{
@@ -182,11 +216,11 @@ export default function Espacos() {
                                                     <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
                                                 </svg>
                                             </button>
-                                            <ul className="dropdown-menu" aria-labelledby={`dropdown-${espaco.id}`}>
+                                            <ul className="dropdown-menu" aria-labelledby={`dropdown-${reserva.id}`}>
                                                 <li>
                                                     <button
                                                         className="dropdown-item"
-                                                        onClick={() => navigate(`/painelespaco/${espaco.id}`)}
+                                                        onClick={() => navigate(`/reserva/${reserva.id}`)}
                                                     >
                                                         Editar
                                                     </button>
@@ -194,25 +228,52 @@ export default function Espacos() {
                                                 <li>
                                                     <button
                                                         className="dropdown-item text-danger"
-                                                        onClick={() => excluirEspaco(espaco.id)}
+                                                        onClick={() => console.log(`Cancelar reserva ${reserva.id}`)}
                                                     >
-                                                        Excluir
+                                                        Cancelar Reserva
                                                     </button>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
 
-                                    <div style={{ padding: "10px" }}>
-                                        <p>Capacidade: {espaco.capacidade} Pessoas</p>
-                                        <p>Localização: {espaco.localidade}</p>
+                                    <div style={{ padding: "10px", flexGrow: 1 }}>
+                                        <p className="card-text">
+                                            <strong>
+                                                As {reserva.horario_inicio}h Até {reserva.horario_fim}h - {getEspacoNome(reserva.espaco_id)}
+                                            </strong>
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                            padding: "10px",
+                                            borderTop: "1px solid #ddd",
+                                        }}
+                                    >
+                                        <p className="card-text" style={{ margin: 0 }}>
+                                            <strong>Data:</strong> {reserva.data}
+                                        </p>
+                                        <p className="card-text">
+                                            <strong>Status: </strong>
+                                            <strong 
+                                                style={{
+                                                    margin: 0,textAlign: "right",
+                                                    color: "green", 
+                                                    }}
+                                                >
+                                                {reserva.status}
+                                            </strong>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
-
             </LayoutDashboard>
         </>
     );

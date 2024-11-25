@@ -134,8 +134,6 @@ class EspacoController extends Controller
             'capacidade' => 'required|string|max:100',
             'recursosInstalados' => 'required|array',
             'recursosInstalados.*' => 'string|max:100',
-            'disponibilidadeInicio' => 'required|string|max:100',
-            'disponibilidadeFim' => 'required|string|max:100',
         ], [
             'nome.required' => 'O campo nome é obrigatório.',
             'localidade.required' => 'O campo local é obrigatório.',
@@ -144,8 +142,6 @@ class EspacoController extends Controller
             'recursosInstalados.array' => 'Os recursos devem ser enviados como um array.',
             'recursosInstalados.*.string' => 'Cada recurso deve ser uma string.',
             'recursosInstalados.*.max' => 'Cada recurso deve ter no máximo 100 caracteres.',
-            'disponibilidadeInicio.required' => 'O campo disponibilidade é obrigatório.',
-            'disponibilidadeFim.required' => 'O campo disponibilidade é obrigatório.',
         ]);
     }
 }

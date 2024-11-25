@@ -1,13 +1,12 @@
-import { ReactNode, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { IToken } from '../../interfaces/token'
+import { ReactNode, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { IToken } from '../../interfaces/token';
 
 interface IProps {
-    children: ReactNode
+    children: ReactNode;
 }
 
 export const LayoutDashboard = (props: IProps) => {
-    
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -15,65 +14,54 @@ export const LayoutDashboard = (props: IProps) => {
         navigate('/');
     };
 
-    const [token, setToken] = useState<IToken>()
-
+    const [token, setToken] = useState<IToken>();
     const [menuVisible, setMenuVisible] = useState(false);
-    
+
     const toggleMenu = () => {
         setMenuVisible(!menuVisible);
     };
 
-    
-
     useEffect(() => {
-        let lsToken =
-            localStorage.getItem('painel.token')
-
-        let token: IToken | undefined
-
+        const lsToken = localStorage.getItem('painel.token');
         if (typeof lsToken === 'string') {
-            token = JSON.parse(lsToken)
-            setToken(token)
+            const token = JSON.parse(lsToken);
+            setToken(token);
         }
-    }, [])
+    }, []);
 
-    
-    
-        return (
-            <>
-                <header className="d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
-                    <div className="d-flex align-items-center">
-                        <img
-                            src="public/img/AlfaUNI.png"
-                            alt="Logo"
-                            className="logo"
-                            style={{ width: '140px', height: '48px' }}
-                        />
-                    </div>
-    
-                    <div className="d-flex align-items-center text-danger ms-auto">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="28"
-                            height="28"
-                            fill="currentColor"
-                            className="bi bi-person-gear me-2"
-                            viewBox="0 0 16 16"
-                        >
-                            <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074-.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92-.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382zM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"/>
-                        </svg>
-                        <span className="fw-bold fs-5 text-center">PORTAL DO ADMINISTRADOR</span>
-                    </div>
-                </header>
-    
-                <style>
-                    {`
+    return (
+        <>
+            <header className="d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
+                <div className="d-flex align-items-center">
+                    <img
+                        src="public/img/AlfaUNI.png"
+                        alt="Logo"
+                        className="logo"
+                        style={{ width: '140px', height: '48px' }}
+                    />
+                </div>
+                <div className="d-flex align-items-center text-danger ms-auto">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        fill="currentColor"
+                        className="bi bi-person-gear me-2"
+                        viewBox="0 0 16 16"
+                    >
+                        <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074-.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92-.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382zM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"/>
+                    </svg>
+                    <span className="fw-bold fs-5 text-center">PORTAL DO ADMINISTRADOR</span>
+                </div>
+            </header>
+
+            <style>
+                {`
                     .nav-link:hover {
                         color: red !important;
                         transition: color 0.3s ease; 
                     }
-                        
-    
+
                     @media (max-width: 768px) {
                         #sidebarMenu {
                             position: absolute;
@@ -82,29 +70,18 @@ export const LayoutDashboard = (props: IProps) => {
                             left: -250px;
                             transition: all 0.3s;
                         }
-    
+
                         #sidebarMenu.show {
                             left: 0;
                         }
-    
+
                         .btn-menu-toggle {
                             display: block;
-                        }
-    
-                        .btn-logout {
-                            position: absolute;
-                            bottom: 10px; 
-                            left: 0;
-                            width: calc(100% - 20px);
-                            margin-left: 10px; 
-                        }
-
-                         .btn-menu-toggle {
                             background-color: lightgray;
                             color: darkgray;
                             border: 1px solid black;
                             position: absolute;
-                            top: 60px; 
+                            top: 10px; 
                             left: 10px;
                             z-index: 1050;
                             padding: 10px;
@@ -117,21 +94,28 @@ export const LayoutDashboard = (props: IProps) => {
                             color: white !important;
                             transition: background-color 0.3s ease, color 1.0s ease; 
                         }
-                            
-                    `}
-                </style>
-    
-                <div className="container-fluid">
-                    <div className="row">
-                        <button
-                            className="btn btn-primary d-md-none btn-menu-toggle"
-                            onClick={toggleMenu}
-                            style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 1050 }}
-                        >
-                            ☰
-                        </button>
 
-                        <nav
+                        .btn-logout {
+                            position: absolute;
+                            bottom: 10px; 
+                            left: 0;
+                            width: calc(100% - 20px);
+                            margin-left: 10px;
+                        }
+                    }
+                `}
+            </style>
+
+            <div className="container-fluid">
+                <div className="row">
+                    <button
+                        className="btn btn-primary d-md-none btn-menu-toggle"
+                        onClick={toggleMenu}
+                    >
+                        ☰
+                    </button>
+
+                    <nav
                             id="sidebarMenu"
                             className={`col-md-3 col-lg-2 d-md-block bg-light sidebar collapse border-end border-dark ${menuVisible ? 'show' : ''}`}
                             style={{
