@@ -1,24 +1,24 @@
 {
   "users": [
     {
-      "nome": "Admin",
+      "name": "Admin",
       "email": "admin@gmail.com",
-      "permissoes": "admin",
+      "papel": "admin",
       "password": "$2a$10$Q8RG0nOaQSy3wCuphnZf0uC4XRtAL4PpaoZlEvlTACqZQKMuIHvJS",
       "id": 1
     },
     {
       "email": "wellington@gmail.com",
       "password": "$2a$10$55lpeF61zlTdfcdnHZ.h5eN.oiYR.lvWnQjtc3MvianDI0mxfmosa",
-      "nome": "Wellington",
-      "permissoes": "professor",
+      "name": "Wellington",
+      "papel": "professor",
       "id": 2
     },
     {
       "email": "julio@gmail.com",
       "password": "$2a$10$fEi0pECqE2u0LVdbY80fJuRNQlV5ftZcFyr8Wmqfm25fHfRNmmjW.",
-      "nome": "Julio",
-      "permissoes": "admin",
+      "name": "Julio",
+      "papel": "admin",
       "id": 3
     }
   ],
@@ -26,7 +26,7 @@
     {
       "nome": "Auditório",
       "capacidade": "255",
-      "localizado": "Térreo",
+      "localidade": "Térreo",
       "disponibilidadeInicio": "19:00 PM",
       "disponibilidadeFim": "22:25 PM",
       "recursosInstalados": [
@@ -40,7 +40,7 @@
     {
       "nome": "Sala 15",
       "capacidade": "40",
-      "localizado": "2ª Andar",
+      "localidade": "2ª Andar",
       "disponibilidadeInicio": "20:55 PM",
       "disponibilidadeFim": "22:25 PM",
       "recursosInstalados": [
@@ -52,7 +52,7 @@
     {
       "nome": "Sala 20",
       "capacidade": "40",
-      "localizado": "3ª Andar",
+      "localidade": "3ª Andar",
       "disponibilidadeInicio": "19:00 PM",
       "disponibilidadeFim": "22:25 PM",
       "recursosInstalados": [
@@ -67,11 +67,23 @@
   "reservas": [
     {
       "id": 1,
-      "espacoId": 1,
-      "usuarioId": 1,
+      "espaco_id": 1,
+      "usuario_id": 1,
       "nome": "João Silva",
-      "dataReserva": "2024-12-01",
-      "horarioInicio": "14:00"
+      "data": "2024-12-01",
+      "horario_inicio": "14:00",
+      "horario_fim": "15:00",
+      "status": "ativa"
+    },
+    {
+      "nome": "SAMUEL ALVES DE SANTANA JUNIOR",
+      "espaco_id": 1,
+      "usuario_id": 2,
+      "data": "1222-12-12",
+      "horario_inicio": "19:00",
+      "horario_fim": "22:00",
+      "status": "ativa",
+      "id": 2
     }
   ]
 }

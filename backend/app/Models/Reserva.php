@@ -9,7 +9,7 @@ class Reserva extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['usuario_id', 'ambiente_id','horario_inicio', 'horario_fim', 'status', 'data'];
+    protected $fillable = ['usuario_id', 'espaco_id', 'nome', 'horario_inicio', 'horario_fim', 'status', 'data'];
 
     // Relacionamentos
     public function usuario()
@@ -17,8 +17,8 @@ class Reserva extends Model
         return $this->belongsTo(User::class, 'usuario_id');
     }
 
-    public function ambiente()
+    public function espaco()
     {
-        return $this->belongsTo(Ambiente::class, 'ambiente_id');
+        return $this->belongsTo(Espaco::class, 'espaco_id');
     }
 }

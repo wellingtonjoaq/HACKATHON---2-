@@ -14,8 +14,6 @@ class Espaco extends Model
         'localidade',
         'capacidade',
         'recursosInstalados',
-        'disponibilidadeInicio',
-        'disponibilidadeFim'
     ];
 
     // Mutator: Salva o array como JSON
