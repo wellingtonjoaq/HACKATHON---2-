@@ -11,10 +11,10 @@ import Notificacao from './pages/Notificacao'
 import QuandoDeReserva from './pages/QuadroDeReserva'
 import Reservas from './pages/Reserva'
 import GerenciarReserva from './pages/Reserva/Gerenciar'
-import AdicionarEspaco from './pages/PainelEspaco/gerenciar'
 import Historico from './pages/HistoricoReserva'
 import ReservaEspaco from './pages/QuadroDeReserva/gerenciar'
 import MeuCronograma from './pages/Notificacao'
+import AdicionarEspaco from './pages/PainelEspaco/Gerenciar'
 export const Rotas = () => {
     
     return(

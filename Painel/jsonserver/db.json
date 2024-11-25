@@ -91,15 +91,6 @@
       "horario_fim": "22:00",
       "status": "ativa",
       "id": 4
-    },
-    {
-      "espaco_id": 2,
-      "usuario_id": 2,
-      "data": "2024-11-26",
-      "horario_inicio": "21:00",
-      "horario_fim": "20:40",
-      "status": "ativa",
-      "id": 6
     }
   ],
   "historico": [
@@ -111,6 +102,15 @@
       "horario_inicio": "14:00",
       "horario_fim": "15:00",
       "status": "Cancelada"
+    },
+    {
+      "espaco_id": 1,
+      "usuario_id": 2,
+      "data": "2024-11-25",
+      "horario_inicio": "19:00",
+      "horario_fim": "20:40",
+      "status": "ativa",
+      "id": 7
     }
   ]
 }
