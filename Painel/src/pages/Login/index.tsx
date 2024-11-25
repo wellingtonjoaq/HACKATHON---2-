@@ -47,7 +47,7 @@ export default function Login() {
                 if (papel === 'admin') {
                     navigate('/usuarios');
                 } else if (papel === 'professor') {
-                    navigate('/notificacao');
+                    navigate('/cronograma');
                 }
 
             }).catch((erro) => {

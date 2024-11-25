@@ -100,6 +100,15 @@
       "horario_fim": "20:40",
       "status": "ativa",
       "id": 6
+    },
+    {
+      "espaco_id": 1,
+      "usuario_id": 2,
+      "data": "2024-11-26",
+      "horario_inicio": "19:00",
+      "horario_fim": "22:00",
+      "status": "ativa",
+      "id": 8
     }
   ],
   "historico": [
