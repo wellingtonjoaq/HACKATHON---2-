@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('localidade');
             $table->string('capacidade');
-            $table->text('recursosInstalados'); // Alterado para TEXT, permitindo armazenamento de JSON
+            $table->text('recursosInstalados');
             $table->timestamps();
         });
     }

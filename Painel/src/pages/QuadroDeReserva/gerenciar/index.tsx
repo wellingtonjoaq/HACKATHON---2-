@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loading } from "../../../components/Loading";
@@ -15,15 +15,11 @@ interface IReserva {
     status: string;
 }
 
-interface IEspacos {
-    id: number;
-    nome: string;
-}
-
 export default function ReservaEspaco() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [loading, setLoading] = useState(false);
-    const [dadosEspacos, setDadosEspacos] = useState<Array<IEspacos>>([]);
+    const [nomeEspaco, setNomeEspaco] = useState<string>("");
     const [formData, setFormData] = useState<IReserva>({
         espaco_id: 0,
         usuario_id: 0,
@@ -34,10 +30,9 @@ export default function ReservaEspaco() {
     });
     const [nomeUsuarioLogado, setNomeUsuarioLogado] = useState<string>("");
 
-    const [isEdit, setIsEdit] = useState<boolean>(false);
-
     useEffect(() => {
-        const lsStorage = localStorage.getItem("painel.token");
+        let lsStorage = localStorage.getItem("painel.token");
+
         let token: IToken | null = null;
 
         if (typeof lsStorage === "string") {
@@ -49,7 +44,7 @@ export default function ReservaEspaco() {
         }
 
         if (!validaPermissao(["professor"], token?.user.papel)) {
-            navigate("/quadrodereserva");
+            navigate("/");
         }
 
         setLoading(true);
@@ -63,27 +58,34 @@ export default function ReservaEspaco() {
             setNomeUsuarioLogado(token.user.name);
         }
 
-        axios
-            .get("http://localhost:3001/espaco")
-            .then((response) => setDadosEspacos(response.data))
-            .catch((err) => console.error("Erro ao buscar espaços", err))
-            .finally(() => setLoading(false));
-    }, [navigate]);
+        // Obtém o ID do espaço da URL e busca o nome do espaço
+        const params = new URLSearchParams(location.search);
+        const espacoId = Number(params.get("espacoId"));
+
+        if (espacoId) {
+            axios
+                .get(`http://localhost:8000/api/espacos/${espacoId}`)
+                .then((response) => {
+                    setNomeEspaco(response.data.nome);
+                    setFormData((prev) => ({
+                        ...prev,
+                        espaco_id: espacoId,
+                    }));
+                })
+                .catch((err) => console.error("Erro ao buscar espaço", err))
+                .finally(() => setLoading(false));
+        } else {
+            navigate("/quadrodereserva"); // Redireciona se nenhum espaço for selecionado
+        }
+    }, [navigate, location]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
-        if (name === "espaco_id") {
-            setFormData((prev) => ({
-                ...prev,
-                [name]: Number(value),
-            }));
-        } else {
-            setFormData((prev) => ({
-                ...prev,
-                [name]: value,
-            }));
-        }
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -91,7 +93,7 @@ export default function ReservaEspaco() {
 
         setLoading(true);
         axios
-            .post("http://localhost:3001/reservas", formData)
+            .post("http://localhost:8000/api/reservas", formData)
             .then(() => {
                 alert("Reserva adicionada com sucesso!");
                 navigate("/quadrodereserva");
@@ -115,7 +117,7 @@ export default function ReservaEspaco() {
                         maxWidth: "90%",
                     }}
                 >
-                    <h1 className="mb-4 text-center">{isEdit ? "Editar Reserva" : "Adicionar Reserva"}</h1>
+                    <h1 className="mb-4 text-center">Adicionar Reserva</h1>
                     <form onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-12 mb-4">
@@ -129,22 +131,10 @@ export default function ReservaEspaco() {
 
                             <div className="col-12 mb-4">
                                 <div className="form-group">
-                                    <label htmlFor="espaco_id">Espaço</label>
-                                    <select
-                                        id="espaco_id"
-                                        name="espaco_id"
-                                        className="form-select"
-                                        value={formData.espaco_id}
-                                        onChange={handleInputChange}
-                                        required
-                                    >
-                                        <option value="">Selecione um espaço</option>
-                                        {dadosEspacos.map((espaco) => (
-                                            <option key={espaco.id} value={espaco.id}>
-                                                {espaco.nome}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <label>Espaço</label>
+                                    <p className="form-control" style={{ backgroundColor: "#e9ecef", cursor: "not-allowed" }}>
+                                        {nomeEspaco || "Carregando..."}
+                                    </p>
                                 </div>
                             </div>
 

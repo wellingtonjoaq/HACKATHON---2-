@@ -43,6 +43,7 @@ export default function Reservas() {
 
     useEffect(() => {
         let lsStorage = localStorage.getItem("painel.token");
+
         let token: IToken | null = null;
 
         if (typeof lsStorage === "string") {
@@ -54,7 +55,7 @@ export default function Reservas() {
         }
 
         if (!validaPermissao(["admin"], token?.user.papel)) {
-            navigate("/reserva");
+            navigate("/");
         }
 
         setLoading(true);

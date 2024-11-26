@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { IToken } from "../../../interfaces/token";
+import { validaPermissao, verificaTokenExpirado } from "../../../services/token";
+import { useNavigate } from "react-router-dom";
 
 interface INotificacao {
     id: number;
@@ -9,9 +12,28 @@ interface INotificacao {
 }
 
 export default function Notificacoes() {
+    const navigate = useNavigate();
+
+
     const [notificacoes, setNotificacoes] = useState<INotificacao[]>([]);
 
     useEffect(() => {
+        let lsStorage = localStorage.getItem("painel.token");
+
+        let token: IToken | null = null;
+
+        if (typeof lsStorage === "string") {
+            token = JSON.parse(lsStorage);
+        }
+
+        if (!token || verificaTokenExpirado(token.accessToken)) {
+            navigate("/");
+        }
+
+        if (!validaPermissao(["professor"], token?.user.papel)) {
+            navigate("/");
+        }
+
         axios
             .get("http://localhost:3001/notificacoes")
             .then((response) => setNotificacoes(response.data))

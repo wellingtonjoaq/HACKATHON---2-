@@ -45,7 +45,8 @@ export default function AdicionarReserva() {
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     useEffect(() => {
-        const lsStorage = localStorage.getItem("painel.token");
+        let lsStorage = localStorage.getItem("painel.token");
+
         let token: IToken | null = null;
 
         if (typeof lsStorage === "string") {
@@ -53,11 +54,11 @@ export default function AdicionarReserva() {
         }
 
         if (!token || verificaTokenExpirado(token.accessToken)) {
-            navigate("/"); 
+            navigate("/");
         }
 
         if (!validaPermissao(["admin"], token?.user.papel)) {
-            navigate("/reserva/criar");
+            navigate("/");
         }
 
         setLoading(true);

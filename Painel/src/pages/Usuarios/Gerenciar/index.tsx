@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IToken } from "../../../interfaces/token";
-import { verificaTokenExpirado } from "../../../services/token";
+import { validaPermissao, verificaTokenExpirado } from "../../../services/token";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import { LayoutDashboard } from "../../../components/AdminDashboard";
@@ -26,14 +26,19 @@ export default function GerenciarUsuarios() {
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     useEffect(() => {
-        let lsStorage = localStorage.getItem('painel.token');
+        let lsStorage = localStorage.getItem("painel.token");
+
         let token: IToken | null = null;
 
-        if (typeof lsStorage === 'string') {
+        if (typeof lsStorage === "string") {
             token = JSON.parse(lsStorage);
         }
 
         if (!token || verificaTokenExpirado(token.accessToken)) {
+            navigate("/");
+        }
+
+        if (!validaPermissao(["admin"], token?.user.papel)) {
             navigate("/");
         }
 

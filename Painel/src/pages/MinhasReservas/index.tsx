@@ -42,7 +42,7 @@ export default function MinhasReservas() {
         }
 
         if (!validaPermissao(["professor"], token?.user.papel)) {
-            navigate("/minhasreservas");
+            navigate("/");
             return;
         }
 
@@ -65,14 +65,21 @@ export default function MinhasReservas() {
             .finally(() => setLoading(false));
     }, [navigate]);
 
-    const reservasFiltradas = dadosReservas.filter(
-        (reserva) => reserva.usuario_id === loggedUser?.id
-    );
-
     const getEspacoNome = (espaco_id: number) => {
         const espaco = dadosEspacos.find((e) => e.id === espaco_id);
         return espaco ? espaco.nome : "Espaço não encontrado";
     };
+
+    const getEspacoLocalidade = (espaco_id: number) => {
+        const espaco = dadosEspacos.find((e) => e.id === espaco_id);
+        return espaco ? espaco.localidade : "";
+    };
+
+    const reservasFiltradas = dadosReservas.filter(
+        (reserva) =>
+            reserva.usuario_id === loggedUser?.id &&
+            (!filtro || getEspacoLocalidade(reserva.espaco_id).includes(filtro))
+    );
 
     const cancelarReserva = (id: number) => {
         const confirmCancel = window.confirm("Tem certeza que deseja cancelar a reserva?");

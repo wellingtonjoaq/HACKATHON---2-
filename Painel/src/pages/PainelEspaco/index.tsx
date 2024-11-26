@@ -11,6 +11,7 @@ interface IEspacos {
     nome: string;
     capacidade: string;
     localidade: string;
+    recursosInstalados: string;
 }
 
 export default function Espacos() {
@@ -208,6 +209,8 @@ export default function Espacos() {
                                     <div style={{ padding: "10px" }}>
                                         <p>Capacidade: {espaco.capacidade} Pessoas</p>
                                         <p>Localização: {espaco.localidade}</p>
+                                        <p>Recursos Instalados:</p>
+                                        <p>{espaco.recursosInstalados}</p>
                                     </div>
                                 </div>
                             </div>

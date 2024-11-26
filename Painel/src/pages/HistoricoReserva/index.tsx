@@ -46,7 +46,8 @@ export default function Historico() {
     const [filtro, setFiltro] = useState<string>("");
 
     useEffect(() => {
-        const lsStorage = localStorage.getItem("painel.token");
+        let lsStorage = localStorage.getItem("painel.token");
+
         let token: IToken | null = null;
 
         if (typeof lsStorage === "string") {
@@ -57,11 +58,10 @@ export default function Historico() {
             navigate("/");
         }
 
-        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
-            navigate("/reserva");
+        if (!validaPermissao(["admin"], token?.user.papel)) {
+            navigate("/");
         }
-
-        // Buscar reservas
+        
         axios.get("http://localhost:3001/reservas/")
             .then((response) => {
                 if (Array.isArray(response.data)) {
