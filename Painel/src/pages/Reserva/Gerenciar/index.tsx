@@ -18,6 +18,7 @@ interface IReserva {
 interface IEspacos {
     id: number;
     nome: string;
+    localidade: string;
 }
 
 interface IUsuarios {
@@ -55,19 +56,19 @@ export default function AdicionarReserva() {
             navigate("/"); 
         }
 
-        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
+        if (!validaPermissao(["admin"], token?.user.papel)) {
             navigate("/reserva/criar");
         }
 
         setLoading(true);
 
         axios
-            .get("http://localhost:3001/espaco")
+            .get('http://localhost:8000/api/espacos/')
             .then((response) => setDadosEspacos(response.data))
             .catch((err) => console.error("Erro ao buscar espaços", err));
 
         axios
-            .get("http://localhost:3001/users")
+            .get('http://localhost:8000/api/user/')
             .then((response) => setDadosUsuarios(response.data))
             .catch((err) => console.error("Erro ao buscar usuários", err))
             .finally(() => setLoading(false));
@@ -94,7 +95,7 @@ export default function AdicionarReserva() {
 
         setLoading(true);
         axios
-            .post("http://localhost:3001/reservas", formData)
+            .post('http://localhost:8000/api/reservas/', formData)
             .then(() => {
                 alert("Reserva adicionada com sucesso!");
                 navigate("/reserva");
@@ -156,7 +157,7 @@ export default function AdicionarReserva() {
                                         <option value="">Selecione um espaço</option>
                                         {dadosEspacos.map((espaco) => (
                                             <option key={espaco.id} value={espaco.id}>
-                                                {espaco.nome}
+                                                {espaco.nome} - {espaco.localidade}
                                             </option>
                                         ))}
                                     </select>

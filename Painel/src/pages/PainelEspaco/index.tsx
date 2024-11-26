@@ -55,6 +55,8 @@ export default function Espacos() {
             navigate("/");
         }
 
+        setLoading(true);
+
         axios
             .get('http://localhost:8000/api/espacos')
             .then((res) => {

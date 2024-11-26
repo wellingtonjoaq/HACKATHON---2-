@@ -32,7 +32,6 @@ return new class extends Migration
                   ->on('espacos') // Nome da tabela referenciada
                   ->onDelete('cascade'); // Ação ao excluir o registro na tabela 'espacos'
 
-            $table->string('nome');
             $table->string('horario_inicio');
             $table->string('horario_fim');
             $table->date('data');

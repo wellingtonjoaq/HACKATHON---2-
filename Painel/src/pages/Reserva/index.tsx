@@ -53,27 +53,27 @@ export default function Reservas() {
             navigate("/");
         }
 
-        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
+        if (!validaPermissao(["admin"], token?.user.papel)) {
             navigate("/reserva");
         }
 
         setLoading(true);
 
-        axios.get("http://localhost:3001/reservas/")
+        axios.get('http://localhost:8000/api/reservas/')
             .then((response) => {
                 console.log(response.data)
                 setDadosReservas(response.data);
             })
             .catch((err) => console.error("Erro ao buscar reserva", err));
 
-        axios.get("http://localhost:3001/espacos/")
+        axios.get('http://localhost:8000/api/espacos/')
             .then((response) => {
                 console.log(response.data)
                 setDadosEspacos(response.data);
             })
             .catch((err) => console.error("Erro ao buscar espaços", err));
 
-        axios.get("http://localhost:3001/user/")
+        axios.get('http://localhost:8000/api/user/')
             .then((response) => {
                 console.log(response.data)
                 setDadosUsuarios(response.data);
@@ -87,9 +87,9 @@ export default function Reservas() {
         return espaco ? espaco.nome : "Espaço não encontrado";
     };
 
-    const getUsuarioEmail = (usuario_id: number) => {
+    const getUsuarioNome = (usuario_id: number) => {
         const usuario = dadosUsuarios.find((u) => u.id === usuario_id);
-        return usuario ? usuario.email : "Usuário não encontrado";
+        return usuario ? usuario.name : "Usuário não encontrado";
     };
 
     const reservasFiltradas = filtro
@@ -220,7 +220,7 @@ export default function Reservas() {
                                                 marginTop: "10px",
                                             }}
                                         >
-                                            <h5>{getUsuarioEmail(reserva.usuario_id)} #{reserva.id}</h5>
+                                            <h5>{getUsuarioNome(reserva.usuario_id)}</h5>
                                         </div>
                                         <div className="dropdown">
                                             <button

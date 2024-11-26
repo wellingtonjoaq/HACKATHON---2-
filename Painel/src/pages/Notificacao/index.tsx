@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ProfessorDashboard } from "../../components/ProfessorDashboard";
 import axios from "axios";
 import { IToken } from "../../interfaces/token";
+import { Loading } from "../../components/Loading";
 import { verificaTokenExpirado, validaPermissao } from "../../services/token";
 
 interface IReserva {
@@ -29,7 +30,7 @@ export default function MeuCronograma() {
     const navigate = useNavigate();
     const [reservas, setReservas] = useState<IReserva[]>([]);
     const [espacos, setEspacos] = useState<IEspaco[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [loggedUser, setLoggedUser] = useState<IToken["user"] | null>(null);
 
     useEffect(() => {
@@ -41,15 +42,16 @@ export default function MeuCronograma() {
         }
 
         if (!validaPermissao(["professor"], token.user.papel)) {
-            navigate("/reserva");
+            navigate("/");
             return;
         }
 
         setLoggedUser(token.user);
+        setLoading(true);
 
         Promise.all([
-            axios.get("http://localhost:3001/reservas"),
-            axios.get("http://localhost:3001/espaco")
+            axios.get('http://localhost:8000/api/reservas/'),
+            axios.get('http://localhost:8000/api/espacos/')
         ])
             .then(([reservasResponse, espacosResponse]) => {
                 setReservas(reservasResponse.data);
@@ -62,14 +64,11 @@ export default function MeuCronograma() {
             .finally(() => setLoading(false));
     }, [navigate]);
 
-    if (loading) {
-        return <p>Carregando...</p>;
-    }
-
     const reservasUsuario = reservas.filter((reserva) => reserva.usuario_id === loggedUser?.id);
 
     return (
         <>
+            <Loading visible={loading} />
             <ProfessorDashboard>
                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-center p-3 bg-light border">
                     <div

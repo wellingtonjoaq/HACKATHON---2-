@@ -4,7 +4,7 @@ import { IToken } from "../../interfaces/token";
 import { validaPermissao, verificaTokenExpirado } from "../../services/token";
 import { Loading } from "../../components/Loading";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css"; 
+import "bootstrap/dist/css/bootstrap.min.css";
 import { ProfessorDashboard } from "../../components/ProfessorDashboard";
 
 interface IReserva {
@@ -24,34 +24,40 @@ interface IEspacos {
     localidade: string;
 }
 
-export default function QuandoDeReserva() {
+export default function MinhasReservas() {
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [dadosEspacos, setDadosEspacos] = useState<Array<IEspacos>>([]);
     const [dadosReservas, setDadosReservas] = useState<Array<IReserva>>([]);
-
     const [filtro, setFiltro] = useState<string>("");
-    const token = JSON.parse(localStorage.getItem("painel.token") || "{}") as IToken;
+    const [loggedUser, setLoggedUser] = useState<IToken["user"] | null>(null);
 
     useEffect(() => {
+        const token = JSON.parse(localStorage.getItem("painel.token") || "{}") as IToken;
+
         if (!token || verificaTokenExpirado(token.accessToken)) {
             navigate("/");
+            return;
         }
 
         if (!validaPermissao(["professor"], token?.user.papel)) {
-            navigate("/quadrodereserva");
+            navigate("/minhasreservas");
+            return;
         }
 
+        setLoggedUser(token.user);
         setLoading(true);
 
-        axios.get("http://localhost:3001/reservas/")
+        axios
+            .get("http://localhost:8000/api/reservas/")
             .then((response) => {
                 setDadosReservas(response.data);
             })
-            .catch((err) => console.error("Erro ao buscar reserva", err));
+            .catch((err) => console.error("Erro ao buscar reservas", err));
 
-        axios.get("http://localhost:3001/espacos/")
+        axios
+            .get("http://localhost:8000/api/espacos/")
             .then((response) => {
                 setDadosEspacos(response.data);
             })
@@ -60,7 +66,7 @@ export default function QuandoDeReserva() {
     }, [navigate]);
 
     const reservasFiltradas = dadosReservas.filter(
-        (reserva) => reserva.usuario_id === token?.user.id
+        (reserva) => reserva.usuario_id === loggedUser?.id
     );
 
     const getEspacoNome = (espaco_id: number) => {
@@ -71,7 +77,8 @@ export default function QuandoDeReserva() {
     const cancelarReserva = (id: number) => {
         const confirmCancel = window.confirm("Tem certeza que deseja cancelar a reserva?");
         if (confirmCancel) {
-            axios.delete(`http://localhost:3001/reservas/${id}`)
+            axios
+                .delete(`http://localhost:8000/api/reservas/${id}`)
                 .then(() => {
                     setDadosReservas((prevState) =>
                         prevState.filter((r) => r.id !== id)
@@ -84,12 +91,11 @@ export default function QuandoDeReserva() {
         }
     };
 
-
     return (
         <>
             <Loading visible={loading} />
             <ProfessorDashboard>
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-center p-3 bg-light border">
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center p-3 bg-light border">
                     <div className="d-flex flex-column align-items-center mb-3 mb-md-0">
                         <h1 className="h2 mt-2">Quadro De Reserva</h1>
                     </div>
@@ -102,41 +108,60 @@ export default function QuandoDeReserva() {
                                 id="dropdownFiltro"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
-                                style={{ 
+                                style={{
                                     width: "200px",
-                                    textAlign: "center" 
+                                    textAlign: "center",
                                 }}
                             >
                                 Filtrar
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-down ms-2" viewBox="0 0 16 16" />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    className="bi bi-caret-down ms-2"
+                                    viewBox="0 0 16 16"
+                                />
                             </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownFiltro" style={{ textAlign: "center", width: "200px" }}>
+                            <ul
+                                className="dropdown-menu"
+                                aria-labelledby="dropdownFiltro"
+                                style={{ textAlign: "center", width: "200px" }}
+                            >
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("Térreo")}>Térreo</button>
+                                    <button
+                                        className="dropdown-item"
+                                        onClick={() => setFiltro("Térreo")}
+                                    >
+                                        Térreo
+                                    </button>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("2ª Andar")}>2ª Andar</button>
+                                    <button
+                                        className="dropdown-item"
+                                        onClick={() => setFiltro("2ª Andar")}
+                                    >
+                                        2ª Andar
+                                    </button>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("3ª Andar")}>3ª Andar</button>
+                                    <button
+                                        className="dropdown-item"
+                                        onClick={() => setFiltro("3ª Andar")}
+                                    >
+                                        3ª Andar
+                                    </button>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item" onClick={() => setFiltro("")}>Todos</button>
+                                    <button
+                                        className="dropdown-item"
+                                        onClick={() => setFiltro("")}
+                                    >
+                                        Todos
+                                    </button>
                                 </li>
                             </ul>
                         </div>
-                        <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={() => navigate("/quadrodereserva/adicionar")}
-                            style={{
-                                padding: "10px 20px",
-                                fontSize: "17px",
-                                borderRadius: "5px",
-                            }}
-                        >
-                            Reservar
-                        </button>
                     </div>
                 </div>
 
@@ -164,12 +189,6 @@ export default function QuandoDeReserva() {
                                         <strong>Status:</strong> {reserva.status}
                                     </p>
                                     <div className="d-flex justify-content-between">
-                                        <button
-                                            className="btn btn-warning"
-                                            onClick={() => navigate(`/quadrodereserva/${reserva.id}`)}
-                                        >
-                                            Editar
-                                        </button>
                                         <button
                                             className="btn btn-danger"
                                             onClick={() => cancelarReserva(reserva.id)}

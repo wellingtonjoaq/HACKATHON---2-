@@ -48,8 +48,8 @@ export default function ReservaEspaco() {
             navigate("/");
         }
 
-        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
-            navigate("/reserva/criar");
+        if (!validaPermissao(["professor"], token?.user.papel)) {
+            navigate("/quadrodereserva");
         }
 
         setLoading(true);

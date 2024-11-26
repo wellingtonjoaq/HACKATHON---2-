@@ -147,7 +147,6 @@ class ReservaController extends Controller
     return $request->validate([
         'usuario_id' => 'required|exists:users,id', // Verifica se o ID existe na tabela 'users'
         'espaco_id' => 'required|exists:espacos,id', // Verifica se o ID existe na tabela 'espacos'
-        'nome' => 'required|string|max:255', // Validação para o campo 'nome'
         'horario_inicio' => 'required|string',
         'horario_fim' => 'required|string',
         'data' => 'required|date',
@@ -157,9 +156,6 @@ class ReservaController extends Controller
         'usuario_id.exists' => 'O usuário selecionado não existe.',
         'espaco_id.required' => 'O campo espaço é obrigatório.',
         'espaco_id.exists' => 'O espaço selecionado não existe.',
-        'nome.required' => 'O campo nome é obrigatório.', // Mensagem de erro personalizada
-        'nome.string' => 'O campo nome deve ser uma string válida.', // Mensagem para erro de tipo
-        'nome.max' => 'O campo nome pode ter no máximo 255 caracteres.', // Mensagem de erro para comprimento
         'horario_inicio.required' => 'O campo horário de início é obrigatório.',
         'horario_inicio.string' => 'O horário de início deve ser um texto válido.',
         'horario_fim.required' => 'O campo horário de término é obrigatório.',

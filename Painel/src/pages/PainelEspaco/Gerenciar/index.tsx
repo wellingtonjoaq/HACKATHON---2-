@@ -79,7 +79,7 @@ export default function AdicionarEspaco() {
             navigate("/");
         }
 
-        if (!validaPermissao(["admin", "professor"], token?.user.papel)) {
+        if (!validaPermissao(["admin"], token?.user.papel)) {
             navigate("/painelespaco/criar");
         }
     }, [navigate]);

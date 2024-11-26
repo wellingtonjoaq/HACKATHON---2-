@@ -15,6 +15,7 @@ import Historico from './pages/HistoricoReserva'
 import ReservaEspaco from './pages/QuadroDeReserva/gerenciar'
 import MeuCronograma from './pages/Notificacao'
 import AdicionarEspaco from './pages/PainelEspaco/Gerenciar'
+import MinhasReservas from './pages/MinhasReservas'
 export const Rotas = () => {
     
     return(
@@ -69,6 +70,10 @@ export const Rotas = () => {
                 <Route
                     path='/quadrodereserva/:id'
                     element={<ReservaEspaco/>}
+                />
+                <Route
+                    path='/minhasreservas'
+                    element={<MinhasReservas/>}
                 />
             </Routes>
         </BrowserRouter>
